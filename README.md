@@ -33,8 +33,10 @@ Each 150-minute class combines a concepts lecture, in-class coding, and, when po
 - Post-training: RLHF, RLVR, RaR
 - Development environment: Python env, repo skeleton, local run workflow
 
-**Slides:** [Introduction](https://x.github.io/ieor-4570-agentic-ai/slides/introduction/) · [Large Language Models](https://x.github.io/ieor-4570-agentic-ai/slides/large-language-models/)  
-**Examples:** [hello-world](examples/hello-world) · [markov-chains-basic](examples/markov-chains-basic) · [markov-chains-books](examples/markov-chains-books) · [markov-chains-temperature](examples/markov-chains-temperature) · [tiny-llama-completions](examples/tiny-llama-completions) · [ollama-completions](examples/ollama-completions)
+| Slides | Examples |
+|-|-|
+| [Introduction](https://x.github.io/ieor-4570-agentic-ai/slides/introduction/) | [hello-world](examples/hello-world) |
+| [Large Language Models](https://x.github.io/ieor-4570-agentic-ai/slides/large-language-models/) | [markov-chains-basic](examples/markov-chains-basic), [markov-chains-books](examples/markov-chains-books), [tiny-llama-completions](examples/tiny-llama-completions), [tiny-llama-chat](examples/tiny-llama-chat) |
 
 ### 2. Chatbots, Prompting, and Reasoning
 
@@ -43,8 +45,11 @@ Each 150-minute class combines a concepts lecture, in-class coding, and, when po
 - Classic chain-of-thought prompting and modern model reasoning
 - Working with hosted models
 
-**Slides:** [Chatbots](https://x.github.io/ieor-4570-agentic-ai/slides/chatbots/) · [In-Context Learning](https://x.github.io/ieor-4570-agentic-ai/slides/in-context-learning/) · [Reasoning](https://x.github.io/ieor-4570-agentic-ai/slides/reasoning/)  
-**Examples:** [tiny-llama-chat](examples/tiny-llama-chat) · [qwen-web-chat](examples/qwen-web-chat) · [few-shot](examples/few-shot) · [five-questions](examples/five-questions) · [five-questions-web](examples/five-questions-web) ([live](https://five-questions-web-16155576949.us-east1.run.app))
+| Slides | Examples |
+|-|-|
+| [Chatbots](https://x.github.io/ieor-4570-agentic-ai/slides/chatbots/) | [markov-chains-temperature](examples/markov-chains-temperature), [ollama-completions](examples/ollama-completions), [qwen-web-chat](examples/qwen-web-chat) |
+| [In-Context Learning](https://x.github.io/ieor-4570-agentic-ai/slides/in-context-learning/) | [few-shot](examples/few-shot), [five-questions](examples/five-questions), [five-questions-web](examples/five-questions-web) ([live](https://five-questions-web-16155576949.us-east1.run.app)) |
+| [Reasoning](https://x.github.io/ieor-4570-agentic-ai/slides/reasoning/) |  |
 
 ### 3. Agents that Live and Do
 
@@ -53,8 +58,9 @@ Each 150-minute class combines a concepts lecture, in-class coding, and, when po
 - Client/server HTTP agents
 - Deploying to GCP
 
-**Slides:** [Harnesses and Tool Calling](https://x.github.io/ieor-4570-agentic-ai/slides/tool-calling/)  
-**Examples:** [qwen-chat](examples/qwen-chat) · [qwen-tool-calling](examples/qwen-tool-calling) · [gemini-hello-world](examples/gemini-hello-world) · [gemini-web-tool-calling](examples/gemini-web-tool-calling) ([live](https://gemini-web-tool-calling-16155576949.us-east1.run.app))
+| Slides | Examples |
+|-|-|
+| [Harnesses and Tool Calling](https://x.github.io/ieor-4570-agentic-ai/slides/tool-calling/) | [qwen-chat](examples/qwen-chat), [qwen-tool-calling](examples/qwen-tool-calling), [gemini-hello-world](examples/gemini-hello-world), [gemini-web-tool-calling](examples/gemini-web-tool-calling) ([live](https://gemini-web-tool-calling-16155576949.us-east1.run.app)) |
 
 ### 4. Agents in Production and Evaluated
 
@@ -63,8 +69,10 @@ Each 150-minute class combines a concepts lecture, in-class coding, and, when po
 - Agent traces (OTEL)
 - Guardrails
 
-**Slides:** [Guardrails and Agent Frameworks](https://x.github.io/ieor-4570-agentic-ai/slides/agent-frameworks/) · [Other Agent Frameworks](https://x.github.io/ieor-4570-agentic-ai/slides/other-agent-frameworks/)  
-**Examples:** [guardrails-password-challenge](examples/guardrails-password-challenge) · [guardrails-password-challenge-web](examples/guardrails-password-challenge-web) ([live](https://guardrails-password-challenge-web-16155576949.us-east1.run.app)) · [agents-sdk-chat](examples/agents-sdk-chat) · [agents-sdk-web](examples/agents-sdk-web) · [adk-web](examples/adk-web)
+| Slides | Examples |
+|-|-|
+| [Guardrails and Agent Frameworks](https://x.github.io/ieor-4570-agentic-ai/slides/agent-frameworks/) | [guardrails-password-challenge](examples/guardrails-password-challenge), [guardrails-password-challenge-web](examples/guardrails-password-challenge-web) ([live](https://guardrails-password-challenge-web-16155576949.us-east1.run.app)), [agents-sdk-chat](examples/agents-sdk-chat), [agents-sdk-web](examples/agents-sdk-web) |
+| [Other Agent Frameworks](https://x.github.io/ieor-4570-agentic-ai/slides/other-agent-frameworks/) | [adk-web](examples/adk-web) |
 
 ### 5. Evaluating Agents
 
@@ -73,8 +81,9 @@ Each 150-minute class combines a concepts lecture, in-class coding, and, when po
 - Online evaluations
 - Eval-first agent design
 
-**Slides:** [Evaluations](https://x.github.io/ieor-4570-agentic-ai/slides/evaluations/)  
-**Examples:** [nyc-311-agent](examples/nyc-311-agent)
+| Slides | Examples |
+|-|-|
+| [Evaluations](https://x.github.io/ieor-4570-agentic-ai/slides/evaluations/) | [nyc-311-agent](examples/nyc-311-agent) |
 
 ### 6. RAG
 
@@ -82,8 +91,9 @@ Each 150-minute class combines a concepts lecture, in-class coding, and, when po
 - Text2SQL
 - Non-semantic RAG
 
-**Slides:** [Retrieval Augmented Generation](https://x.github.io/ieor-4570-agentic-ai/slides/retrieval-augmented-generation/)  
-**Examples:** [magic-item-shop-classic-rag](examples/magic-item-shop-classic-rag) · [magic-item-shop-semantic-rag](examples/magic-item-shop-semantic-rag) · [magic-item-shop-filesystem-rag](examples/magic-item-shop-filesystem-rag)
+| Slides | Examples |
+|-|-|
+| [Retrieval Augmented Generation](https://x.github.io/ieor-4570-agentic-ai/slides/retrieval-augmented-generation/) | [magic-item-shop-classic-rag](examples/magic-item-shop-classic-rag), [magic-item-shop-semantic-rag](examples/magic-item-shop-semantic-rag), [magic-item-shop-filesystem-rag](examples/magic-item-shop-filesystem-rag) |
 
 ### 7. Multi-Agent Architectures
 

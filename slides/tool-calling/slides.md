@@ -11,7 +11,7 @@ layout: cover
 
 # Harnesses and Tool Calling
 
-IEOR 4570 - Agentic AI for Data Science
+IEOR 4570 - Agentic AI
 
 <div class="absolute bottom-2 left-2 p-2 pl-4 text-left w-125 border-1">
 

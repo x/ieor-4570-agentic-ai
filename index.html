@@ -3,134 +3,70 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
 <title>Agentic AI · IEOR 4570</title>
 <meta name="description" content="IEOR 4570 at Columbia University: design, build, and ship production-grade AI agents. Slides, code, and live demos.">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 <style>
-  :root { --pico-font-size: 106%; }
-  .hero { padding: 4rem 0 2rem; }
-  .hero h1 { font-size: 3rem; margin-bottom: 0.5rem; }
-  .hero .lead { font-size: 1.2rem; max-width: 42rem; color: var(--pico-muted-color); }
-  .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; color: var(--pico-primary); font-weight: 600; }
-  .schedule { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); gap: 1.25rem; }
-  .schedule article { margin: 0; display: flex; flex-direction: column; }
-  .schedule article header { margin-bottom: 0.75rem; }
-  .schedule article header small { color: var(--pico-primary); font-weight: 600; }
-  .schedule h3 { margin: 0.25rem 0 0; font-size: 1.15rem; }
-  .schedule ul { font-size: 0.9rem; padding-left: 1rem; }
-  .schedule ul li { list-style: disc; margin-bottom: 0.2rem; }
-  .decks { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
-  .decks a { padding: 0.3rem 0.75rem; font-size: 0.85rem; }
-  .examples { font-size: 0.8rem; line-height: 1.8; margin: 0; }
-  .examples small { display: block; color: var(--pico-muted-color); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.7rem; }
-  .examples a { margin-right: 0.6rem; white-space: nowrap; }
-  .examples a.live { margin-left: -0.4rem; padding: 0.05rem 0.4rem; border-radius: 1rem; background: var(--pico-ins-color); color: #fff; text-decoration: none; font-size: 0.7rem; }
-  .upcoming { opacity: 0.6; }
-  .upcoming footer { margin-top: auto; }
-  section { margin-bottom: 4rem; }
-  body > footer { color: var(--pico-muted-color); font-size: 0.85rem; padding-bottom: 3rem; }
+  :root { --bg: #f5f5f0; --fg: #111; --muted: #777; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #1b1b19; --fg: #e8e8e3; --muted: #8a8a85; } }
+  * { font-size: 14px; }
+  html {
+    font-family: "DejaVu Sans Mono", Menlo, Consolas, ui-monospace, monospace;
+    max-width: 900px; margin: 0 auto; padding: 0 3% 4ch 2%;
+    background: var(--bg); color: var(--fg); line-height: 1.5;
+  }
+  a { color: var(--fg); font-weight: bold; }
+  p { margin-top: 0; text-align: justify; }
+  h1 { font-weight: bold; text-transform: uppercase; margin: 4ch 0 0; }
+  h1.title { font-size: 2em; margin-top: 3ch; }
+  hr { border: none; border-top: 1px solid var(--fg); margin: 0.5ch 0 1.5ch; }
+  ul { padding-left: 1em; margin: 0; }
+  .sub { color: var(--muted); margin: 0; }
+  .topics { list-style: none; padding: 0; }
+  .topics > li { margin-bottom: 1.5ch; }
+  .row { display: flex; justify-content: space-between; gap: 2ch; }
+  .topics ul { color: var(--muted); }
+  .topics ul a { font-weight: normal; }
+  .upcoming { color: var(--muted); }
 </style>
 </head>
 <body>
-<main class="container">
-  <section class="hero">
-    <p class="eyebrow">IEOR 4570 · Columbia University</p>
-    <h1>Agentic AI</h1>
-    <p class="lead">A hands-on course where students design, build, and ship production-grade AI agents that plan, retrieve knowledge, call tools, and interact with users in real time.</p>
-    <p><a role="button" href="#schedule">Browse the course</a> <a role="button" class="secondary outline" href="https://github.com/x/ieor-4570-agentic-ai">Source on GitHub</a></p>
-  </section>
+<p class="sub">IEOR 4570 · Columbia University</p>
+<h1 class="title">Agentic AI</h1>
+<hr>
+<p>A hands-on course where students design, build, and ship production-grade, task-specific AI agents that plan, retrieve knowledge, call tools, and interact with users in real time.</p>
+<p>It starts with the principles behind LLMs and builds up to modern patterns such as retrieval-augmented generation, natural language to SQL, agent memory, sandboxed coding, and deep research, with a focus on production requirements: persistent sessions, evaluations, observability, and cost control. Students write agents in Python, with front-ends, and deploy them to Google Cloud Platform.</p>
+<p>Prerequisites: Python and a working knowledge of basic machine learning.</p>
 
-  <section>
-    <h2>What you'll learn</h2>
-    <div class="grid">
-      <div>
-        <ul>
-          <li>How large language models and chat interfaces work</li>
-          <li>Prompt engineering, tool calling, and retrieval-augmented generation</li>
-          <li>Evaluations that let you hill climb an agent</li>
-        </ul>
-      </div>
-      <div>
-        <ul>
-          <li>Multi-agent architectures, memory, and context engineering</li>
-          <li>Deploying production agents to GCP</li>
-          <li>Trading off accuracy, cost, and latency</li>
-        </ul>
-      </div>
-    </div>
-    <p><small>Prerequisites: Python and a working knowledge of basic machine learning.</small></p>
-  </section>
+<h1>Topics</h1>
+<hr>
+<ul class="topics">
+<li><div class="row"><b>Introduction</b><a href="slides/introduction/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/hello-world">hello-world</a></li></ul></li>
+<li><div class="row"><b>Large Language Models</b><a href="slides/large-language-models/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/markov-chains-basic">markov-chains-basic</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/markov-chains-books">markov-chains-books</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/tiny-llama-completions">tiny-llama-completions</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/tiny-llama-chat">tiny-llama-chat</a></li></ul></li>
+<li><div class="row"><b>Chatbots</b><a href="slides/chatbots/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/markov-chains-temperature">markov-chains-temperature</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/ollama-completions">ollama-completions</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/qwen-web-chat">qwen-web-chat</a></li></ul></li>
+<li><div class="row"><b>In-Context Learning</b><a href="slides/in-context-learning/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/few-shot">few-shot</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/five-questions">five-questions</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/five-questions-web">five-questions-web</a> &middot; <a href="https://five-questions-web-16155576949.us-east1.run.app">live demo</a></li></ul></li>
+<li><div class="row"><b>Reasoning</b><a href="slides/reasoning/">slides</a></div></li>
+<li><div class="row"><b>Harnesses and Tool Calling</b><a href="slides/tool-calling/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/qwen-chat">qwen-chat</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/qwen-tool-calling">qwen-tool-calling</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/gemini-hello-world">gemini-hello-world</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/gemini-web-tool-calling">gemini-web-tool-calling</a> &middot; <a href="https://gemini-web-tool-calling-16155576949.us-east1.run.app">live demo</a></li></ul></li>
+<li><div class="row"><b>Guardrails and Agent Frameworks</b><a href="slides/agent-frameworks/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/guardrails-password-challenge">guardrails-password-challenge</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/guardrails-password-challenge-web">guardrails-password-challenge-web</a> &middot; <a href="https://guardrails-password-challenge-web-16155576949.us-east1.run.app">live demo</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/agents-sdk-chat">agents-sdk-chat</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/agents-sdk-web">agents-sdk-web</a></li></ul></li>
+<li><div class="row"><b>Other Agent Frameworks</b><a href="slides/other-agent-frameworks/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/adk-web">adk-web</a></li></ul></li>
+<li><div class="row"><b>Evaluations</b><a href="slides/evaluations/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/nyc-311-agent">nyc-311-agent</a></li></ul></li>
+<li><div class="row"><b>Retrieval Augmented Generation</b><a href="slides/retrieval-augmented-generation/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/magic-item-shop-classic-rag">magic-item-shop-classic-rag</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/magic-item-shop-semantic-rag">magic-item-shop-semantic-rag</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/magic-item-shop-filesystem-rag">magic-item-shop-filesystem-rag</a></li></ul></li>
+</ul>
 
-  <section id="schedule">
-    <h2>Schedule</h2>
-    <div class="schedule">
-<article>
-<header><small>Class 1</small><h3>Introduction and Large Language Models</h3></header>
-<ul><li>The history and inner workings of modern large language models</li><li>Post-training: RLHF, RLVR, RaR</li><li>Development environment: Python env, repo skeleton, local run workflow</li></ul>
-<p class="decks"><a role="button" href="slides/introduction/">Introduction</a><a role="button" href="slides/large-language-models/">Large Language Models</a></p>
-<p class="examples"><small>Examples</small> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/hello-world">hello-world</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/markov-chains-basic">markov-chains-basic</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/markov-chains-books">markov-chains-books</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/markov-chains-temperature">markov-chains-temperature</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/tiny-llama-completions">tiny-llama-completions</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/ollama-completions">ollama-completions</a></p>
-</article>
-<article>
-<header><small>Class 2</small><h3>Chatbots, Prompting, and Reasoning</h3></header>
-<ul><li>How does an LLM become a chatbot? Who am I talking to?</li><li>Classic prompt engineering techniques</li><li>Classic chain-of-thought prompting and modern model reasoning</li><li>Working with hosted models</li></ul>
-<p class="decks"><a role="button" href="slides/chatbots/">Chatbots</a><a role="button" href="slides/in-context-learning/">In-Context Learning</a><a role="button" href="slides/reasoning/">Reasoning</a></p>
-<p class="examples"><small>Examples</small> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/tiny-llama-chat">tiny-llama-chat</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/qwen-web-chat">qwen-web-chat</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/few-shot">few-shot</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/five-questions">five-questions</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/five-questions-web">five-questions-web</a> <a class="live" href="https://five-questions-web-16155576949.us-east1.run.app">live</a></p>
-</article>
-<article>
-<header><small>Class 3</small><h3>Agents that Live and Do</h3></header>
-<ul><li>Tool calling, how it works and best practices</li><li>What&#x27;s an agent harness?</li><li>Client/server HTTP agents</li><li>Deploying to GCP</li></ul>
-<p class="decks"><a role="button" href="slides/tool-calling/">Harnesses and Tool Calling</a></p>
-<p class="examples"><small>Examples</small> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/qwen-chat">qwen-chat</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/qwen-tool-calling">qwen-tool-calling</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/gemini-hello-world">gemini-hello-world</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/gemini-web-tool-calling">gemini-web-tool-calling</a> <a class="live" href="https://gemini-web-tool-calling-16155576949.us-east1.run.app">live</a></p>
-</article>
-<article>
-<header><small>Class 4</small><h3>Agents in Production and Evaluated</h3></header>
-<ul><li>OpenAI Agents SDK</li><li>Other agent frameworks: Google ADK, LangGraph, PydanticAI</li><li>Agent traces (OTEL)</li><li>Guardrails</li></ul>
-<p class="decks"><a role="button" href="slides/agent-frameworks/">Guardrails and Agent Frameworks</a><a role="button" href="slides/other-agent-frameworks/">Other Agent Frameworks</a></p>
-<p class="examples"><small>Examples</small> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/guardrails-password-challenge">guardrails-password-challenge</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/guardrails-password-challenge-web">guardrails-password-challenge-web</a> <a class="live" href="https://guardrails-password-challenge-web-16155576949.us-east1.run.app">live</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/agents-sdk-chat">agents-sdk-chat</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/agents-sdk-web">agents-sdk-web</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/adk-web">adk-web</a></p>
-</article>
-<article>
-<header><small>Class 5</small><h3>Evaluating Agents</h3></header>
-<ul><li>Offline evaluations and hill climbing</li><li>Golden and silver datasets</li><li>Online evaluations</li><li>Eval-first agent design</li></ul>
-<p class="decks"><a role="button" href="slides/evaluations/">Evaluations</a></p>
-<p class="examples"><small>Examples</small> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/nyc-311-agent">nyc-311-agent</a></p>
-</article>
-<article>
-<header><small>Class 6</small><h3>RAG</h3></header>
-<ul><li>Classic (semantic) retrieval augmented generation</li><li>Text2SQL</li><li>Non-semantic RAG</li></ul>
-<p class="decks"><a role="button" href="slides/retrieval-augmented-generation/">Retrieval Augmented Generation</a></p>
-<p class="examples"><small>Examples</small> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/magic-item-shop-classic-rag">magic-item-shop-classic-rag</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/magic-item-shop-semantic-rag">magic-item-shop-semantic-rag</a> <a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/magic-item-shop-filesystem-rag">magic-item-shop-filesystem-rag</a></p>
-</article>
-<article class="upcoming">
-<header><small>Class 7</small><h3>Multi-Agent Architectures</h3></header>
-<ul><li>Basic multi-agent patterns</li><li>Composite multi-agent patterns, deep research</li></ul>
-<footer><small>Coming soon</small></footer>
-</article>
-<article class="upcoming">
-<header><small>Class 8</small><h3>Memory and Modern Context Engineering</h3></header>
-<ul><li>State vs. session vs. context vs. memory</li><li>Trimming, truncating, and summarizing context</li><li>The overwhelming importance of the KV-cache</li></ul>
-<footer><small>Coming soon</small></footer>
-</article>
-<article class="upcoming">
-<header><small>Class 9</small><h3>Coding Agents and Modern Tool Calling</h3></header>
-<ul><li>Model Context Protocol, local and remote</li><li>Coding as a form of tool composition</li><li>MCP: Code Mode</li><li>Progressive tool disclosure</li><li>Sandboxes</li></ul>
-<footer><small>Coming soon</small></footer>
-</article>
-<article class="upcoming">
-<header><small>Class 10</small><h3>Claude Code</h3></header>
-<ul><li>A walk through of the Spring &#x27;26 Claude Code source code leak</li><li>How I use Claude Code</li></ul>
-<footer><small>Coming soon</small></footer>
-</article>
-<article class="upcoming">
-<header><small>Class 11</small><h3>Fun Topics</h3></header>
-<ul><li>Autoresearch / goal-mode</li><li>Constrained decoding</li><li>AI detectors and watermarking</li><li>Frontier labs, hyperscalers, enterprise FDEs, the industry landscape</li></ul>
-<footer><small>Coming soon</small></footer>
-</article>
-    </div>
-  </section>
-</main>
-<footer class="container">
-  Devon Peticolas · <a href="https://github.com/x/ieor-4570-agentic-ai">github.com/x/ieor-4570-agentic-ai</a>
-</footer>
+<h1>Coming Up</h1>
+<hr>
+<ul class="upcoming">
+<li>Multi-Agent Architectures</li>
+<li>Memory and Modern Context Engineering</li>
+<li>Coding Agents and Modern Tool Calling</li>
+<li>Claude Code</li>
+<li>Fun Topics</li>
+</ul>
+
+<h1>Links</h1>
+<hr>
+<ul>
+  <li><a href="https://github.com/x/ieor-4570-agentic-ai">github.com/x/ieor-4570-agentic-ai</a></li>
+  <li><a href="https://peticol.as/">Devon Peticolas</a></li>
+</ul>
 </body>
 </html>
