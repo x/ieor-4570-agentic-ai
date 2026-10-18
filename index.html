@@ -21,11 +21,12 @@
   hr { border: none; border-top: 1px solid var(--fg); margin: 0.5ch 0 1.5ch; }
   ul { padding-left: 1em; margin: 0; }
   .sub { color: var(--muted); margin: 0; }
-  .topics { list-style: none; padding: 0; }
-  .topics > li { margin-bottom: 1.5ch; }
-  .row { display: flex; justify-content: space-between; gap: 2ch; }
-  .topics ul { color: var(--muted); }
-  .topics ul a { font-weight: normal; }
+  table { width: 100%; border-collapse: collapse; }
+  td { vertical-align: top; padding: 0.1em 0; }
+  td:last-child { text-align: right; white-space: nowrap; padding-left: 2ch; }
+  tr.deck td { padding-top: 1.5ch; }
+  tr.deck:first-child td { padding-top: 0; }
+  td.ex { padding-left: 2ch; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -36,18 +37,42 @@
 
 <h1>Topics</h1>
 <hr>
-<ul class="topics">
-<li><div class="row"><b>Introduction</b><a href="slides/introduction/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/hello-world">hello-world</a></li></ul></li>
-<li><div class="row"><b>Large Language Models</b><a href="slides/large-language-models/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/markov-chains-basic">markov-chains-basic</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/markov-chains-books">markov-chains-books</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/tiny-llama-completions">tiny-llama-completions</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/tiny-llama-chat">tiny-llama-chat</a></li></ul></li>
-<li><div class="row"><b>Chatbots</b><a href="slides/chatbots/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/markov-chains-temperature">markov-chains-temperature</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/ollama-completions">ollama-completions</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/qwen-web-chat">qwen-web-chat</a></li></ul></li>
-<li><div class="row"><b>In-Context Learning</b><a href="slides/in-context-learning/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/few-shot">few-shot</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/five-questions">five-questions</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/five-questions-web">five-questions-web</a> &middot; <a href="https://five-questions-web-16155576949.us-east1.run.app">live demo</a></li></ul></li>
-<li><div class="row"><b>Reasoning</b><a href="slides/reasoning/">slides</a></div></li>
-<li><div class="row"><b>Harnesses and Tool Calling</b><a href="slides/tool-calling/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/qwen-chat">qwen-chat</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/qwen-tool-calling">qwen-tool-calling</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/gemini-hello-world">gemini-hello-world</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/gemini-web-tool-calling">gemini-web-tool-calling</a> &middot; <a href="https://gemini-web-tool-calling-16155576949.us-east1.run.app">live demo</a></li></ul></li>
-<li><div class="row"><b>Guardrails and Agent Frameworks</b><a href="slides/agent-frameworks/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/guardrails-password-challenge">guardrails-password-challenge</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/guardrails-password-challenge-web">guardrails-password-challenge-web</a> &middot; <a href="https://guardrails-password-challenge-web-16155576949.us-east1.run.app">live demo</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/agents-sdk-chat">agents-sdk-chat</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/agents-sdk-web">agents-sdk-web</a></li></ul></li>
-<li><div class="row"><b>Other Agent Frameworks</b><a href="slides/other-agent-frameworks/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/adk-web">adk-web</a></li></ul></li>
-<li><div class="row"><b>Evaluations</b><a href="slides/evaluations/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/nyc-311-agent">nyc-311-agent</a></li></ul></li>
-<li><div class="row"><b>Retrieval Augmented Generation</b><a href="slides/retrieval-augmented-generation/">slides</a></div><ul><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/magic-item-shop-classic-rag">magic-item-shop-classic-rag</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/magic-item-shop-semantic-rag">magic-item-shop-semantic-rag</a></li><li><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/magic-item-shop-filesystem-rag">magic-item-shop-filesystem-rag</a></li></ul></li>
-</ul>
+<table>
+<tr class="deck"><td><b>Introduction</b></td><td><a href="slides/introduction/">slides</a></td></tr>
+<tr><td class="ex">hello-world</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/hello-world">src</a></td></tr>
+<tr class="deck"><td><b>Large Language Models</b></td><td><a href="slides/large-language-models/">slides</a></td></tr>
+<tr><td class="ex">markov-chains-basic</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/markov-chains-basic">src</a></td></tr>
+<tr><td class="ex">markov-chains-books</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/markov-chains-books">src</a></td></tr>
+<tr><td class="ex">tiny-llama-completions</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/tiny-llama-completions">src</a></td></tr>
+<tr><td class="ex">tiny-llama-chat</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/tiny-llama-chat">src</a></td></tr>
+<tr class="deck"><td><b>Chatbots</b></td><td><a href="slides/chatbots/">slides</a></td></tr>
+<tr><td class="ex">markov-chains-temperature</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/markov-chains-temperature">src</a></td></tr>
+<tr><td class="ex">ollama-completions</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/ollama-completions">src</a></td></tr>
+<tr><td class="ex">qwen-web-chat</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/qwen-web-chat">src</a></td></tr>
+<tr class="deck"><td><b>In-Context Learning</b></td><td><a href="slides/in-context-learning/">slides</a></td></tr>
+<tr><td class="ex">few-shot</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/few-shot">src</a></td></tr>
+<tr><td class="ex">five-questions</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/five-questions">src</a></td></tr>
+<tr><td class="ex">five-questions-web</td><td><a href="https://five-questions-web-16155576949.us-east1.run.app">live demo</a> &nbsp;<a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/five-questions-web">src</a></td></tr>
+<tr class="deck"><td><b>Reasoning</b></td><td><a href="slides/reasoning/">slides</a></td></tr>
+<tr class="deck"><td><b>Harnesses and Tool Calling</b></td><td><a href="slides/tool-calling/">slides</a></td></tr>
+<tr><td class="ex">qwen-chat</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/qwen-chat">src</a></td></tr>
+<tr><td class="ex">qwen-tool-calling</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/qwen-tool-calling">src</a></td></tr>
+<tr><td class="ex">gemini-hello-world</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/gemini-hello-world">src</a></td></tr>
+<tr><td class="ex">gemini-web-tool-calling</td><td><a href="https://gemini-web-tool-calling-16155576949.us-east1.run.app">live demo</a> &nbsp;<a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/gemini-web-tool-calling">src</a></td></tr>
+<tr class="deck"><td><b>Guardrails and Agent Frameworks</b></td><td><a href="slides/agent-frameworks/">slides</a></td></tr>
+<tr><td class="ex">guardrails-password-challenge</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/guardrails-password-challenge">src</a></td></tr>
+<tr><td class="ex">guardrails-password-challenge-web</td><td><a href="https://guardrails-password-challenge-web-16155576949.us-east1.run.app">live demo</a> &nbsp;<a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/guardrails-password-challenge-web">src</a></td></tr>
+<tr><td class="ex">agents-sdk-chat</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/agents-sdk-chat">src</a></td></tr>
+<tr><td class="ex">agents-sdk-web</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/agents-sdk-web">src</a></td></tr>
+<tr class="deck"><td><b>Other Agent Frameworks</b></td><td><a href="slides/other-agent-frameworks/">slides</a></td></tr>
+<tr><td class="ex">adk-web</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/adk-web">src</a></td></tr>
+<tr class="deck"><td><b>Evaluations</b></td><td><a href="slides/evaluations/">slides</a></td></tr>
+<tr><td class="ex">nyc-311-agent</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/nyc-311-agent">src</a></td></tr>
+<tr class="deck"><td><b>Retrieval Augmented Generation</b></td><td><a href="slides/retrieval-augmented-generation/">slides</a></td></tr>
+<tr><td class="ex">magic-item-shop-classic-rag</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/magic-item-shop-classic-rag">src</a></td></tr>
+<tr><td class="ex">magic-item-shop-semantic-rag</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/magic-item-shop-semantic-rag">src</a></td></tr>
+<tr><td class="ex">magic-item-shop-filesystem-rag</td><td><a href="https://github.com/x/ieor-4570-agentic-ai/tree/main/examples/magic-item-shop-filesystem-rag">src</a></td></tr>
+</table>
 
 <h1>Links</h1>
 <hr>
