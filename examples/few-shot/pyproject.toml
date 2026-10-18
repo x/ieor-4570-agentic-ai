@@ -1,0 +1,13 @@
+[project]
+name = "five-questions"
+version = "0.1.0"
+description = "Five Questions against a small chat model, with rewind"
+# torch 2.2.2 ships wheels for cp310-cp312 only; without the ceiling uv
+# picks a newer Python and the install fails.
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "transformers>=4.36.0,<5",
+    "torch>=2.1.0,<=2.2.2",
+    "accelerate>=0.20.0",
+    "numpy<2",
+]

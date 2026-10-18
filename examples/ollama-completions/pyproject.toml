@@ -1,0 +1,8 @@
+[project]
+name = "ollama-completions"
+version = "0.1.0"
+description = "Completions against a local Qwen2.5-1.5B served by Ollama, called through LiteLLM"
+requires-python = ">=3.10"
+dependencies = [
+    "litellm>=1.50",
+]

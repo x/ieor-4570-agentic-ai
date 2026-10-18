@@ -1,0 +1,19 @@
+# Virtual environment. uv recreates it from pyproject.toml + uv.lock.
+.venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Local secrets and config. Commit .env.example instead, never .env.
+.env
+
+# macOS
+.DS_Store
+
+# Raw downloads and the full dataset. Only the 5% sample is committed.
+data/raw/
+data/311-full.parquet
+
+# Inspect eval logs
+logs/

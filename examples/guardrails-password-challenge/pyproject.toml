@@ -1,0 +1,8 @@
+[project]
+name = "guardrails-password-challenge"
+version = "0.1.0"
+description = "A command-line Gandalf password game: six levels of stacked guardrails on Gemini"
+requires-python = ">=3.10"
+dependencies = [
+    "litellm[google]>=1.0.0",
+]

@@ -1,0 +1,10 @@
+[project]
+name = "qwen-web-chat"
+version = "0.1.0"
+description = "Web chat interface: FastAPI server, LiteLLM client, Qwen2.5-1.5B served by Ollama"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "litellm>=1.50",
+]

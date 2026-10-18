@@ -1,0 +1,12 @@
+[project]
+name = "magic-item-shop-semantic-rag"
+version = "0.1.0"
+description = "gemini-web-tool-calling with classic (semantic) RAG: a ChromaDB search tool over D&D magic items"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "litellm>=1.50",
+    "google-cloud-aiplatform>=1.40.0",
+    "chromadb>=1.0",
+]

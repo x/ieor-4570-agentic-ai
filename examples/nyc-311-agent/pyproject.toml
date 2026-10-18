@@ -1,0 +1,12 @@
+[project]
+name = "nyc-311-agent"
+version = "0.1.0"
+description = "A one-shot OpenAI Agents SDK agent that answers questions about NYC 311 service requests with SQL"
+requires-python = ">=3.10"
+dependencies = [
+    "openai-agents[litellm]>=0.22",
+    "google-cloud-aiplatform>=1.40.0",
+    "duckdb>=1.1",
+    "inspect-ai>=0.3.276",
+    "google-genai>=2.28.0",
+]

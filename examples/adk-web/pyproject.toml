@@ -1,0 +1,15 @@
+[project]
+name = "adk-web"
+version = "0.1.0"
+description = "agents-sdk-web rebuilt with Google ADK: FastAPI + ADK + Gemini"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "google-adk[db]>=2.10",
+    # DatabaseSessionService on a SQLite file. google-adk[db] doesn't pull in
+    # greenlet, which SQLAlchemy's async engine needs, so ask for it here.
+    "sqlalchemy[asyncio]>=2.0",
+    "aiosqlite>=0.20",
+    "requests>=2.31",
+]

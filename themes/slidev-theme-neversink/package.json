@@ -1,0 +1,60 @@
+{
+  "name": "slidev-theme-neversink",
+  "version": "0.4.1",
+  "author": "gureckis",
+  "type": "module",
+  "keywords": [
+    "slidev-theme",
+    "slidev"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "slidev": ">=52.11.3"
+  },
+  "scripts": {
+    "build": "slidev build example.md -o docs/public/example --base /slidev-theme-neversink/example/",
+    "dev": "slidev example.md",
+    "export": "slidev export example.md",
+    "screenshot": "slidev export screenshot.md --format png --output docs/public/screenshots/",
+    "screenshot:dev": "slidev screenshot.md",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "ci:publish": "pnpm publish --access public --no-git-checks",
+    "release": "bumpp package.json"
+  },
+  "dependencies": {
+    "@iconify-json/logos": "^1.2.9",
+    "@iconify-json/mdi": "^1.2.3",
+    "@iconify-json/twemoji": "^1.2.4",
+    "@iconify-json/uim": "^1.2.3",
+    "@iconify/json": "^2.2.380",
+    "@iconify/vue": "^4.3.0",
+    "@mdit/plugin-sub": "^0.12.0",
+    "@slidev/types": "^52.11.3",
+    "markdown-it-mark": "^4.0.0",
+    "qrcode.vue": "^3.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gureckis/slidev-theme-neversink.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gureckis/slidev-theme-neversink/issues"
+  },
+  "homepage": "https://gureckis.github.io/slidev-theme-neversink/",
+  "slidev": {
+    "colorSchema": "both",
+    "highlighter": "all"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^52.11.3",
+    "bumpp": "^9.11.1",
+    "playwright-chromium": "^1.55.0",
+    "pnpm": "^9.15.9",
+    "prettier": "^3.8.0",
+    "prettier-plugin-slidev": "^1.0.5",
+    "vitepress": "^1.6.4"
+  },
+  "packageManager": "pnpm@9.6.0"
+}

@@ -1,0 +1,23 @@
+/* Marker-aware lists. Classes are added in vite.config.ts from the source
+   bullet marker: `*` -> ul-loose, `-` -> ul-tight.
+   Loose = airier + full-size square; tight = snug + smaller square.
+   Numbered (ol) lists are loose too.
+   `!important` beats the theme's own `.slidev-layout ul { list-style: square }`. */
+.ul-loose {
+  list-style-type: square !important;
+}
+.ul-loose > li {
+  margin-block: 0.85em;
+}
+.ul-tight {
+  list-style-type: square !important;
+}
+.ul-tight > li {
+  margin-block: 0.1em;
+}
+.ul-tight > li::marker {
+  font-size: 0.65em;
+}
+ol > li {
+  margin-block: 0.85em;
+}

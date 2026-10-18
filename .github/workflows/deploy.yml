@@ -1,0 +1,45 @@
+name: Deploy live demos to Cloud Run
+
+on:
+  push:
+    branches: [main]
+    paths: [examples/**]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        example: [five-questions-web, gemini-web-tool-calling, guardrails-password-challenge-web]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - id: changed
+        # Manual runs deploy everything; pushes deploy only the demos they touched.
+        run: |
+          if [ "${{ github.event_name }}" = workflow_dispatch ] || ! git diff --quiet HEAD^ HEAD -- examples/${{ matrix.example }}; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.changed.outputs.deploy
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.DEPLOY_SA }}
+      - if: steps.changed.outputs.deploy
+        uses: google-github-actions/setup-gcloud@v2
+      - if: steps.changed.outputs.deploy
+        # Buildpacks build from pyproject.toml + uv.lock. The entrypoint replaces `uv run app.py`,
+        # which only listens on localhost. One instance keeps the in-memory sessions in one place.
+        run: |
+          gcloud run deploy ${{ matrix.example }} \
+            --source examples/${{ matrix.example }} \
+            --project ieor-4570-f26 --region us-east1 \
+            --set-build-env-vars "GOOGLE_ENTRYPOINT=uvicorn app:app --host 0.0.0.0 --port \$PORT" \
+            --service-account ${{ vars.RUN_SA }} \
+            --allow-unauthenticated --max-instances 1 --quiet

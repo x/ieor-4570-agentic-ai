@@ -1,0 +1,92 @@
+.slidev-layout {
+  h1 + p {
+    @apply -mt-2 opacity-50 mb-4;
+  }
+
+  p + h2, ul + h2, table + h2 {
+    @apply mt-10;
+  }
+
+  /* h4 acts as a small section label; give it breathing room from whatever
+     block precedes it (same convention as the h2 rule above, smaller gap) */
+  p + h4, ul + h4, ol + h4, blockquote + h4, pre + h4, table + h4, div + h4 {
+    @apply mt-4;
+  }
+
+  h1 {
+    @apply text-4xl mb-4 -ml-[0.05em];
+  }
+
+  h2 {
+    @apply text-3xl;
+  }
+
+  h3 {
+    @apply text-2xl;
+  }
+
+  h4 {
+    @apply text-xl;
+  }
+
+  h5 {
+    @apply text-base;
+  }
+
+  h6 {
+    @apply text-sm pt-1 uppercase tracking-widest font-500 -ml-[0.05em];
+  }
+
+  h6:not(.opacity-100) {
+    @apply opacity-40;
+  }
+}
+
+/* Non-heading text directly after a heading in a ::title:: slot renders as a
+   muted subtitle: gray, smaller, and tight against the heading. */
+.slidev-layout .title :is(h1, h2, h3, h4) + p,
+.slidev-layout.sidetitle :is(h1, h2, h3, h4) + p {
+  font-size: 0.9em;
+  opacity: 0.5;
+  margin-top: 0.1em;
+  margin-bottom: 0;
+}
+
+.slidev-layout.cover,
+.slidev-layout.intro {
+  @apply h-full grid;
+
+  h1 {
+    @apply text-6xl leading-20;
+  }
+}
+
+
+.slidev-layout.fact {
+  @apply text-center grid h-full;
+  h1 {
+    @apply text-8xl font-700;
+  }
+  h1 + p {
+    @apply font-700 text-2xl;
+  }
+}
+.slidev-layout.statement {
+  @apply text-center grid h-full;
+
+  h1 {
+    @apply text-6xl font-700;
+  }
+}
+.slidev-layout.quote {
+  @apply grid h-full;
+
+  h1 + p {
+    @apply mt-2;
+  }
+}
+.slidev-layout.section {
+  h1 {
+    @apply text-6xl font-500 leading-20;
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "large-language-models",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "slidev --port 3030",
+    "build": "slidev build",
+    "export": "slidev export"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@slidev/cli": "^52.19.1",
+    "@slidev/theme-default": "^0.25.0",
+    "slidev-theme-neversink": "link:../../themes/slidev-theme-neversink"
+  },
+  "dependencies": {
+    "playwright-chromium": "^1.58.1"
+  }
+}

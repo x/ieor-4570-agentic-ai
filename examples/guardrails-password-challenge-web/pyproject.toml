@@ -1,0 +1,12 @@
+[project]
+name = "guardrails-password-challenge-web"
+version = "0.1.0"
+description = "guardrails-password-challenge as a web app: FastAPI + OpenAI Agents SDK guardrails + LiteLLM + Gemini"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "openai-agents[litellm]>=0.22",
+    "google-cloud-aiplatform>=1.40.0",
+    "jinja2>=3.1",
+]

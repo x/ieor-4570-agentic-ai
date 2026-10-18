@@ -1,0 +1,6 @@
+[project]
+name = "markov-chains-basic"
+version = "0.1.0"
+description = "Basic Markov chain example with simple text corpus"
+requires-python = ">=3.10"
+dependencies = []

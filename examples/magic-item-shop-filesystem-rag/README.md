@@ -1,0 +1,3 @@
+# magic-item-shop-filesystem-rag
+
+`agents-sdk-web` with the weather tools swapped for a sandbox, over the same 1,029 magic items as `magic-item-shop-semantic-rag`. There's no index: the items are filed as `items/<type>/<rarity>/<Item>.md`, a `SandboxAgent` gets read-only access to that folder where it lives, and its only tool, `exec_command` from the `Shell` capability, lets the model search it with `ls`, `grep`, and `cat`. The read-only grant is enforced on macOS; on Linux use `DockerSandboxClient` for isolation. Run `gcloud auth application-default login`, then `uv run app.py`, and open http://localhost:8000. Try "Do you have anything that sets a sword on fire?"

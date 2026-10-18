@@ -1,0 +1,270 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@50;100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+:root {
+  --neversink-title-font: 'Victor Mono', monospace;
+  --neversink-main-font: 'Inter', sans-serif;
+  --neversink-mono-font: 'Victor Mono', monospace;
+  --neversink-quote-font: var(--neversink-mono-font);
+  --font-mono: var(--neversink-mono-font);
+  /* Slidev's code blocks (.slidev-code) read this var */
+  --slidev-code-font-family: var(--neversink-mono-font);
+  color-scheme: light only; /* prevent browser dark mode auto-adjustments */
+  @apply neversink-white-scheme; /* apply the default white scheme everywhere */
+}
+
+/* layout specific customizations are shared in the layout file (e.g., layouts/cover.vue) */
+
+/* sets the default font */
+#page-root {
+  font-family: var(--neversink-main-font);
+  font-weight: 400;
+}
+
+/* binds variable to the color of a slide*/
+.slidecolor {
+  background-color: var(--neversink-bg-color);
+  color: var(--neversink-text-color);
+}
+
+.slidev-layout p {
+  line-height: 1.2;
+}
+/* adjust default bullets */
+.slidev-layout li {
+  margin-bottom: 0.4em;
+  line-height: 1.4em;
+}
+
+.slidev-layout ul {
+  margin-top: 0.7em;
+}
+
+/* no gap above a list that starts a slide, column, or slot */
+.slidev-layout ul:first-child,
+.slidev-layout ol:first-child {
+  margin-top: 0;
+}
+
+/* a list following a paragraph sits as close to it as bullets sit to each
+   other (0.4em, matching li margin-bottom). Both sides of the boundary must
+   shrink because the p's margin-bottom collapses with the list's margin-top. */
+.slidev-layout p:has(+ ul),
+.slidev-layout p:has(+ ol) {
+  margin-bottom: 0.4em;
+}
+
+.slidev-layout p + ul,
+.slidev-layout p + ol {
+  margin-top: 0;
+}
+
+/* bold keeps the surrounding font (Inter in body text, Victor Mono in titles and quotes) */
+.slidev-layout strong,
+.slidev-layout b {
+  font-family: inherit;
+  font-weight: 700;
+}
+
+.slidev-code-wrapper {
+  width: 100%;
+}
+
+/* Soft-wrap a code block: ```xml {class:'wrap'} */
+.slidev-code-wrapper.wrap pre,
+.slidev-code-wrapper.wrap pre code,
+.slidev-code-wrapper.wrap .line {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ==foo== inside a fenced code block (see setup/shiki.ts) */
+.slidev-layout pre .code-mark {
+  background: #fde68a; /* amber-200, same as <mark> */
+  border-radius: 0.2em;
+  padding: 0.05em 0;
+}
+
+/* Slide background matches code blocks, so side-by-side code reads as one surface.
+   Frontmatter: `class: code-bg` */
+.slidev-layout.code-bg {
+  background: var(--slidev-code-background) !important;
+}
+
+/* Transparent code background: ```text {class:'plain'} (combine: {class:'wrap plain'}) */
+.slidev-code-wrapper.plain pre,
+.slidev-code-wrapper.plain .slidev-code {
+  background: transparent !important;
+}
+
+/* the highlighted terms from markdown highlighter == == */
+.slidev-layout mark {
+  @apply bg-amber-200;
+  @apply text-amber-600;
+  font-weight: 300;
+  padding-left: 0.4em;
+  padding-right: 0.4em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  border-radius: 0.4em;
+}
+
+/* every code element uses the theme mono font (Slidev core applies uno's font-mono otherwise) */
+.slidev-layout code,
+.slidev-layout pre,
+.slidev-layout kbd {
+  font-family: var(--neversink-mono-font);
+  /* Victor Mono ligatures turn <| |> == -> into single glyphs; show literal characters in code */
+  font-variant-ligatures: none;
+}
+
+/* inline code blocks (not syntax-highlighted code in pre blocks) */
+.slidev-layout :not(pre) > code:not([class*="language-"]) {
+  font-size: 0.9em;
+  background: var(--neversink-bg-code-color) !important;
+  border-radius: var(--slidev-code-radius);
+  color: var(--neversink-fg-code-color) !important;
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+  font-weight: 300;
+}
+
+/* default layout */
+
+.my-auto p {
+  margin: 0;
+  padding: 0;
+}
+
+.slidev-layout {
+  margin-top: 0px;
+  padding-top: 1.8rem;
+  font-size: 1.05rem; /* Slidev default is 1.1rem; headings are in em and scale with this */
+}
+
+.slidev-layout p:first-child {
+  padding-top: 0;
+  margin-top: 0.5rem;
+}
+
+/* all headings: title font, bold */
+.slidev-layout :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--neversink-title-font);
+  font-weight: 700;
+}
+
+.slidev-layout h1 {
+  font-size: 1.7em;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.slidev-layout h2 {
+  font-size: 1.5em;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.slidev-layout h3 {
+  font-size: 1.25em;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.slidev-layout h4 {
+  font-size: 1.1em;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.slidev-layout h5 {
+  font-size: 1em;
+  margin-bottom: 0;
+}
+
+.slidev-layout h6 {
+  font-size: 0.9em;
+  margin-bottom: 0;
+}
+
+/* <small>: fine print, side comments, source lines. One tag, no classes. */
+.slidev-layout small {
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+.slidev-layout h1 + p,
+.slidev-layout h2 + p,
+.slidev-layout h3 + p {
+  opacity: 0.9;
+  margin-top: 0.5em;
+}
+
+.slidev-layout h1 + ul,
+.slidev-layout h2 + ul,
+.slidev-layout h3 + ul {
+  margin-top: 0.5em;
+}
+
+.bwimg {
+  filter: grayscale(100%) contrast(150%) brightness(120%);
+  display: inline;
+}
+
+/* customize the v-clicks */
+.slidev-vclick-target {
+  transition: opacity 100ms ease;
+}
+
+.slidev-vclick-hidden {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+html.dark {
+  /* dark mode default CSS variables (for when no scheme class is present) */
+  --neversink-bg-color: #1e293b;
+  --neversink-bg-code-color: #334155;
+  --neversink-fg-code-color: #e2e8f0;
+  --neversink-fg-color: #e2e8f0;
+  --neversink-text-color: #e2e8f0;
+
+  .lectureno {
+    background-color: #9a9a9a;
+    color: hsl(0, 0%, 100%);
+    opacity: 1;
+  }
+
+  .invert {
+    filter: invert(1);
+  }
+
+  .slidev-layout {
+    color: #d0d0d0;
+  }
+}
+
+html:not(.dark) {
+  /* light mode css here */
+  .lectureno {
+    background-color: #e1e1e1;
+    color: #000;
+    opacity: 1;
+  }
+}
+
+/* credits */
+
+.fullpage {
+  height: 100vh;
+  display: flex;
+}
+
+/* markdown-it-footnotes */
+.footnotes-sep {
+  visibility: hidden;
+}

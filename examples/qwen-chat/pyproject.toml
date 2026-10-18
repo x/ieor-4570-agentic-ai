@@ -1,0 +1,8 @@
+[project]
+name = "qwen-chat"
+version = "0.1.0"
+description = "The simplest chatbot: a loop, a messages list, and LiteLLM talking to Qwen on Ollama"
+requires-python = ">=3.10"
+dependencies = [
+    "litellm>=1.50",
+]

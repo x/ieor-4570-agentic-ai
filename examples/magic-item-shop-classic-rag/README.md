@@ -1,0 +1,3 @@
+# magic-item-shop-classic-rag
+
+`magic-item-shop-semantic-rag` rebuilt the way Lewis et al. (2020) did RAG: retrieval is a fixed step, not a tool. Every message, even "hello there!", is embedded verbatim and searched against the same ChromaDB index, the top 3 items are pasted into the prompt, and Gemini answers in a single completion: no tools, no loop, and no session, so each message stands alone. The page shows each retrieval like a tool call. Run `uv run index_items.py` once, then `uv run app.py` and open http://localhost:8000. Try "Do you have anything that sets a sword on fire?", then "what about something cheaper?"

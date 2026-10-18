@@ -1,0 +1,9 @@
+[project]
+name = "qwen-tool-calling"
+version = "0.1.0"
+description = "qwen-chat upgraded with a tool: the harness runs get_weather when the model asks for it"
+requires-python = ">=3.10"
+dependencies = [
+    "litellm>=1.50",
+    "requests>=2.31",
+]

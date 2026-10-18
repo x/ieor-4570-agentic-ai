@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Five Questions</title>
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: system-ui, sans-serif;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 3rem 1rem;
+            }
+            #container {
+                width: 100%;
+                max-width: 900px;
+                display: flex;
+                flex-direction: column;
+                border: 1px solid #e0e0e0;
+            }
+            #messages {
+                overflow-y: auto;
+                padding: 2rem;
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+                min-height: 450px;
+                max-height: 70vh;
+            }
+            .msg {
+                line-height: 1.5;
+                max-width: 80%;
+            }
+            .msg.user {
+                align-self: flex-end;
+                text-align: right;
+            }
+            .msg .role {
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: #999;
+                margin-bottom: 0.25rem;
+            }
+            .msg.loading .content {
+                color: #999;
+            }
+            #input-area {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                padding: 1.5rem;
+                border-top: 1px solid #e0e0e0;
+            }
+            #user-input {
+                flex: 1 1 12rem;
+                padding: 0.75rem 0;
+                border: none;
+                border-bottom: 1px solid #e0e0e0;
+                font-size: 1rem;
+                outline: none;
+            }
+            #user-input:focus {
+                border-bottom-color: #000;
+            }
+            button {
+                padding: 0.75rem 1.5rem;
+                background: #000;
+                color: #fff;
+                border: none;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                cursor: pointer;
+            }
+            .msg.error .content {
+                color: #dc2626;
+            }
+            button.secondary {
+                background: #fff;
+                color: #000;
+                border: 1px solid #000;
+            }
+            button:disabled {
+                opacity: 0.3;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <div id="messages"></div>
+            <div id="input-area">
+                <input
+                    type="text"
+                    id="user-input"
+                    placeholder="Ask a yes-or-no question..."
+                    autocomplete="off"
+                />
+                <button id="send-btn">Send</button>
+                <button id="rewind-btn" class="secondary">Rewind</button>
+                <button id="new-btn" class="secondary">New game</button>
+            </div>
+        </div>
+        <script src="/context-panel.js"></script>
+        <script>
+            const messages = document.getElementById("messages");
+            const userInput = document.getElementById("user-input");
+            const sendBtn = document.getElementById("send-btn");
+            const rewindBtn = document.getElementById("rewind-btn");
+            let sessionId = null;
+
+            function addMessage(role, text, extraClass = "") {
+                const div = document.createElement("div");
+                div.className = "msg " + (role === "you" ? "user" : "assistant") + " " + extraClass;
+                const label = document.createElement("div");
+                label.className = "role";
+                label.textContent = role;
+                const content = document.createElement("div");
+                content.className = "content";
+                content.textContent = text;
+                div.append(label, content);
+                messages.appendChild(div);
+                messages.scrollTop = messages.scrollHeight;
+                return div;
+            }
+
+            async function newGame() {
+                const res = await fetch("/new", { method: "POST" });
+                sessionId = (await res.json()).session_id;
+                messages.innerHTML = "";
+                addMessage("assistant", "I have my object in mind. You have 5 questions remaining.");
+                rewindBtn.disabled = true;
+                showContext(sessionId);
+                userInput.focus();
+            }
+
+            async function send() {
+                const text = userInput.value.trim();
+                if (!text) return;
+
+                userInput.value = "";
+                sendBtn.disabled = true;
+                const question = addMessage("you", text);
+                const answer = addMessage("assistant", "Thinking...", "loading");
+
+                const res = await fetch("/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: text, session_id: sessionId }),
+                });
+                const data = await res.json();
+                answer.classList.remove("loading");
+                if (res.ok) {
+                    answer.querySelector(".content").textContent = data.response;
+                    rewindBtn.disabled = false;
+                } else {
+                    // The server dropped the question, so drop it here too and show why.
+                    question.remove();
+                    answer.classList.add("error");
+                    answer.querySelector(".content").textContent = data.detail;
+                    setTimeout(() => answer.remove(), 5000);
+                    userInput.value = text;
+                }
+                showContext(sessionId);
+                sendBtn.disabled = false;
+                userInput.focus();
+            }
+
+            async function rewind() {
+                await fetch("/rewind?session_id=" + sessionId, { method: "POST" });
+                // Remove the last question and answer; the opening line stays.
+                const shown = messages.querySelectorAll(".msg:not(.error)");
+                shown[shown.length - 1].remove();
+                shown[shown.length - 2].remove();
+                rewindBtn.disabled = shown.length - 2 <= 1;
+                showContext(sessionId);
+            }
+
+            sendBtn.addEventListener("click", send);
+            rewindBtn.addEventListener("click", rewind);
+            document.getElementById("new-btn").addEventListener("click", newGame);
+            userInput.addEventListener("keydown", function (e) {
+                if (e.key === "Enter") send();
+            });
+            newGame();
+        </script>
+    </body>
+</html>

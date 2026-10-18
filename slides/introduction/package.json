@@ -1,0 +1,23 @@
+{
+  "name": "00-introduction",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "slidev --port 3030",
+    "build": "slidev build",
+    "export": "slidev export"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@slidev/cli": "^52.11.3",
+    "@slidev/theme-default": "^0.25.0",
+    "slidev-theme-neversink": "link:../../themes/slidev-theme-neversink"
+  },
+  "dependencies": {
+    "g": "^2.0.1",
+    "playwright-chromium": "^1.58.1"
+  }
+}

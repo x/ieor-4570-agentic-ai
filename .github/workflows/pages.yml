@@ -1,0 +1,56 @@
+name: Deploy site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: pnpm
+          cache-dependency-path: |
+            themes/slidev-theme-neversink/pnpm-lock.yaml
+            slides/*/pnpm-lock.yaml
+      - name: Build decks
+        run: |
+          set -euo pipefail
+          # The theme is a link: dependency, so its own deps must be installed first.
+          (cd themes/slidev-theme-neversink && pnpm install --frozen-lockfile)
+          for dir in slides/*/; do
+            deck=$(basename "$dir")
+            (cd "$dir" && pnpm install --frozen-lockfile && pnpm exec slidev build --base "/${{ github.event.repository.name }}/slides/$deck/" --out "$GITHUB_WORKSPACE/dist/slides/$deck")
+            # plain ![](./images/x.png) references stay relative URLs; slidev only copies public/
+            [ -d "$dir/images" ] && cp -R "$dir/images" "dist/slides/$deck/"
+          done
+          cp index.html dist/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
