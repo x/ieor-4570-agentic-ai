@@ -66,11 +66,11 @@ def chat(request: ChatRequest):
 
     try:
         reply = litellm.completion(
-            model="vertex_ai/gemini-3.5-flash-lite",
-            vertex_location="global",
-            # Gemini 3 can't switch thinking off; "none" asks for its minimum, which used zero
-            # thinking tokens in testing. So each answer comes from the visible transcript alone.
-            reasoning_effort="none",
+            # An older, smaller Gemini, because it can switch thinking off entirely (Gemini 3
+            # can't). With no hidden thinking, each answer comes from the visible transcript alone.
+            model="vertex_ai/gemini-2.5-flash-lite",
+            vertex_location="us-east1",
+            reasoning_effort="disable",
             messages=messages,
         ).choices[0].message.content
     except Exception as e:
