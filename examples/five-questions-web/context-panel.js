@@ -35,7 +35,7 @@ contextStyle.textContent = `
     .context-msg.assistant { border-color: #2563eb; }
     .context-msg.tool { border-color: #f59e0b; }
     .context-msg.new { animation: context-flash 1.5s; }
-    .context-msg .dropped { color: #aaa; font-style: italic; margin: 0.25rem 0; }
+    .context-msg.thinking { border-color: #ccc; color: #aaa; }
     @keyframes context-flash { from { background: #fef3c7; } }
     @media (max-width: 800px) {
         body { margin-right: 0; height: auto !important; flex-direction: column; }
@@ -55,26 +55,24 @@ async function showContext(sessionId) {
 
     contextPanel.innerHTML = "<h2>Context (" + messages.length + " messages)</h2>";
     messages.forEach((m, i) => {
-        const div = document.createElement("div");
-        // Highlight what this turn added
-        div.className = "context-msg " + m.role + (i >= contextShown ? " new" : "");
-        const role = document.createElement("div");
-        role.className = "role";
-        role.textContent = m.role;
-        div.appendChild(role);
-        // Hidden thinking is shown but grayed out: it isn't sent back to the model next turn
-        if (m.thinking) {
-            const thinking = document.createElement("div");
-            thinking.className = "dropped";
-            thinking.textContent = "thinking (not sent back to the model):\n" + m.thinking;
-            div.appendChild(thinking);
-        }
+        const isNew = i >= contextShown;  // highlight what this turn added
+        // Hidden thinking gets its own grayed-out block: it isn't sent back to the model
+        if (m.thinking) contextPanel.appendChild(contextBlock("thinking", m.thinking, isNew));
         // Tool-call turns have no text, so show the calls instead
-        div.appendChild(
-            document.createTextNode(m.content ?? JSON.stringify(m.tool_calls, null, 2)),
+        contextPanel.appendChild(
+            contextBlock(m.role, m.content ?? JSON.stringify(m.tool_calls, null, 2), isNew),
         );
-        contextPanel.appendChild(div);
     });
     contextShown = messages.length;
     contextPanel.scrollTop = contextPanel.scrollHeight;
+}
+
+function contextBlock(label, text, isNew) {
+    const div = document.createElement("div");
+    div.className = "context-msg " + label + (isNew ? " new" : "");
+    const role = document.createElement("div");
+    role.className = "role";
+    role.textContent = label;
+    div.append(role, document.createTextNode(text));
+    return div;
 }
