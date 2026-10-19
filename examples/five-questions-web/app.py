@@ -12,9 +12,12 @@ from context_panel import add_context_panel
 # --- Config ---
 
 SYSTEM_PROMPT = """
-We are playing a guessing game. Think of a single everyday object,
-but DO NOT SAY WHAT IT IS and DO NOT GIVE CLUES. The user will ask yes-or-no questions.
-Reply to each question with exactly one line in this form:
+We are playing a guessing game. First, choose a single everyday object. If you think
+before replying, name the object in your thinking, but DO NOT SAY WHAT IT IS in your
+replies and DO NOT GIVE CLUES.
+When the user starts the game, reply with exactly:
+"I have my object in mind. You have 5 questions remaining."
+Then the user will ask yes-or-no questions. Reply to each with exactly one line in this form:
 "Yes. You have N questions remaining." or "No. You have N questions remaining."
 Never ask questions. Never name the object. Never give clues.
 When the user has no questions remaining, wait for them to guess or give up.
