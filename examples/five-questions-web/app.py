@@ -68,7 +68,8 @@ def chat(request: ChatRequest):
         reply = litellm.completion(
             model="vertex_ai/gemini-3.5-flash-lite",
             vertex_location="global",
-            # No hidden thinking: each answer is sampled from the visible transcript alone.
+            # Gemini 3 can't switch thinking off; "none" asks for its minimum, which used zero
+            # thinking tokens in testing. So each answer comes from the visible transcript alone.
             reasoning_effort="none",
             messages=messages,
         ).choices[0].message.content
