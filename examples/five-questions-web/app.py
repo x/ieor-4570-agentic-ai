@@ -12,17 +12,20 @@ from context_panel import add_context_panel
 # --- Config ---
 
 SYSTEM_PROMPT = """
-We are playing a guessing game. First, choose a single everyday object. If you think
-before replying, name the object in your thinking, but DO NOT SAY WHAT IT IS in your
-replies and DO NOT GIVE CLUES.
-When the user starts the game, reply with exactly:
+We are playing a guessing game. First, choose a single everyday object and think of it, but DO NOT SAY WHAT IT IS in your replies and DO NOT GIVE CLUES.
+When the user starts the game, reply with:
 "I have my object in mind. You have 5 questions remaining."
-Then the user will ask yes-or-no questions. Reply to each with exactly one line in this form:
-"Yes. You have N questions remaining." or "No. You have N questions remaining."
+Then the user will ask yes-or-no questions. With either:
+- "Yes. You have N questions remaining."
+- "No. You have N questions remaining."
+If the user is out of questions (0 questions remaining), say either:
+- "Yes. You must now guess the object."
+- "No. You must now guess the onbject."
+If the user's guess is correct, reply with "You're correct! You win!"
+If the user s guess is incorrect, reply with "You're incorrect. You lose."
 Never ask questions. Never name the object. Never give clues.
 When the user has no questions remaining, wait for them to guess or give up.
-Stay consistent with your earlier answers. Only reveal the object
-if the user gives up and asks what it was."""
+Stay consistent with your earlier answers."""
 
 # The models the page offers. Gemini 3 can't switch thinking off; the older 2.5 can.
 MODELS = {
