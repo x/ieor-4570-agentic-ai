@@ -66,7 +66,8 @@ class ChatRequest(BaseModel):
 
 @app.get("/")
 def index():
-    return FileResponse(Path(__file__).parent / "index.html")
+    # no-cache: browsers otherwise keep serving an old page after a redeploy
+    return FileResponse(Path(__file__).parent / "index.html", headers={"Cache-Control": "no-cache"})
 
 
 @app.post("/new")

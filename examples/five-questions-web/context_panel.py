@@ -19,4 +19,4 @@ def add_context_panel(app, sessions):
 
     @app.get("/context-panel.js")
     def script():
-        return FileResponse(Path(__file__).parent / "context-panel.js")
+        return FileResponse(Path(__file__).parent / "context-panel.js", headers={"Cache-Control": "no-cache"})
