@@ -35,6 +35,7 @@ contextStyle.textContent = `
     .context-msg.assistant { border-color: #2563eb; }
     .context-msg.tool { border-color: #f59e0b; }
     .context-msg.new { animation: context-flash 1.5s; }
+    .context-msg .dropped { color: #aaa; font-style: italic; margin: 0.25rem 0; }
     @keyframes context-flash { from { background: #fef3c7; } }
     @media (max-width: 800px) {
         body { margin-right: 0; height: auto !important; flex-direction: column; }
@@ -61,6 +62,13 @@ async function showContext(sessionId) {
         role.className = "role";
         role.textContent = m.role;
         div.appendChild(role);
+        // Hidden thinking is shown but grayed out: it isn't sent back to the model next turn
+        if (m.thinking) {
+            const thinking = document.createElement("div");
+            thinking.className = "dropped";
+            thinking.textContent = "thinking (not sent back to the model):\n" + m.thinking;
+            div.appendChild(thinking);
+        }
         // Tool-call turns have no text, so show the calls instead
         div.appendChild(
             document.createTextNode(m.content ?? JSON.stringify(m.tool_calls, null, 2)),

@@ -88,6 +88,12 @@
                 color: #000;
                 border: 1px solid #000;
             }
+            select {
+                padding: 0.75rem;
+                border: 1px solid #000;
+                background: #fff;
+                font-size: 0.75rem;
+            }
             button:disabled {
                 opacity: 0.3;
             }
@@ -106,6 +112,11 @@
                 <button id="send-btn">Send</button>
                 <button id="rewind-btn" class="secondary">Rewind</button>
                 <button id="new-btn" class="secondary">New game</button>
+                <select id="mode">
+                    <option value="none">No thinking</option>
+                    <option value="hidden">Hidden thinking</option>
+                    <option value="transcript">Thinking in the transcript</option>
+                </select>
             </div>
         </div>
         <script src="/context-panel.js"></script>
@@ -132,11 +143,17 @@
             }
 
             async function newGame() {
-                const res = await fetch("/new", { method: "POST" });
-                sessionId = (await res.json()).session_id;
+                sessionId = null;
                 messages.innerHTML = "";
-                addMessage("assistant", "I have my object in mind. You have 5 questions remaining.");
                 rewindBtn.disabled = true;
+                // The model writes its own opening line, so this takes a model call.
+                const opening = addMessage("assistant", "Thinking...", "loading");
+                const res = await fetch("/new?mode=" + document.getElementById("mode").value, { method: "POST" });
+                const data = await res.json();
+                opening.classList.remove("loading");
+                opening.querySelector(".content").textContent = res.ok ? data.response : data.detail;
+                if (!res.ok) return;
+                sessionId = data.session_id;
                 showContext(sessionId);
                 userInput.focus();
             }
@@ -187,6 +204,7 @@
             sendBtn.addEventListener("click", send);
             rewindBtn.addEventListener("click", rewind);
             document.getElementById("new-btn").addEventListener("click", newGame);
+            document.getElementById("mode").addEventListener("change", newGame);
             userInput.addEventListener("keydown", function (e) {
                 if (e.key === "Enter") send();
             });
