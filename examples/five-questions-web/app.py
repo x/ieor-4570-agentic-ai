@@ -20,9 +20,9 @@ Then the user will ask yes-or-no questions. With either:
 - "No. You have N questions remaining."
 If the user is out of questions (0 questions remaining), say either:
 - "Yes. You must now guess the object."
-- "No. You must now guess the onbject."
+- "No. You must now guess the object."
 If the user's guess is correct, reply with "You're correct! You win!"
-If the user s guess is incorrect, reply with "You're incorrect. You lose."
+If the user's guess is incorrect, reply with "You're incorrect. You lose."
 Never ask questions. Never name the object. Never give clues.
 When the user has no questions remaining, wait for them to guess or give up.
 Stay consistent with your earlier answers."""
