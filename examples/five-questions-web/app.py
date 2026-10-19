@@ -22,8 +22,8 @@ If the user is out of questions (0 questions remaining), say either:
 - "Yes. You must now guess the object."
 - "No. You must now guess the object."
 If the user's guess is correct, reply with "You're correct! You win!"
-If the user's guess is incorrect, reply with "You're incorrect. You lose."
-Never ask questions. Never name the object. Never give clues.
+If the user's guess is incorrect, reply with "You're incorrect. It was <your object>. You lose."
+Never ask questions. Never name the object until the game is over. Never give clues.
 When the user has no questions remaining, wait for them to guess or give up.
 Stay consistent with your earlier answers."""
 
