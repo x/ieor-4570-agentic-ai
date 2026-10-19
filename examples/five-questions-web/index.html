@@ -112,7 +112,8 @@
                 <button id="send-btn">Send</button>
                 <button id="rewind-btn" class="secondary">Rewind</button>
                 <button id="new-btn" class="secondary">New game</button>
-                <select id="model">
+                <!-- autocomplete="off": otherwise a reload restores the old choice after the game starts -->
+                <select id="model" autocomplete="off">
                     <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash-Lite, thinking off</option>
                     <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite, thinking on low</option>
                 </select>
@@ -145,6 +146,7 @@
                 sessionId = null;
                 messages.innerHTML = "";
                 rewindBtn.disabled = true;
+                addMessage("you", "Let's play 5 questions.");
                 // The model writes its own opening line, so this takes a model call.
                 const opening = addMessage("assistant", "Thinking...", "loading");
                 const res = await fetch("/new?model=" + document.getElementById("model").value, { method: "POST" });
@@ -192,11 +194,11 @@
 
             async function rewind() {
                 await fetch("/rewind?session_id=" + sessionId, { method: "POST" });
-                // Remove the last question and answer; the opening line stays.
+                // Remove the last question and answer; the two opening lines stay.
                 const shown = messages.querySelectorAll(".msg:not(.error)");
                 shown[shown.length - 1].remove();
                 shown[shown.length - 2].remove();
-                rewindBtn.disabled = shown.length - 2 <= 1;
+                rewindBtn.disabled = shown.length - 2 <= 2;
                 showContext(sessionId);
             }
 
