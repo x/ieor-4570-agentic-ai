@@ -13,3 +13,6 @@ __pycache__/
 
 # The vector index. index_items.py rebuilds it.
 chroma_data/
+
+# The session store. The app recreates it.
+conversations.db*

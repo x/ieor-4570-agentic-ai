@@ -657,26 +657,22 @@ In this primative version of RAG, retrieval is run _on every task_.
 ::right::
 
 ```python
-def run_rag(message: str) -> tuple[str, str]:
+# No tools: the model never decides to search
+agent = Agent(name="Keeper", instructions=SYSTEM_PROMPT,
+              model=...)  # Gemini via LiteLLM
+
+async def run_rag(message: str) -> tuple[str, str]:
     """One pass, the same on every message:
     retrieve, augment, generate."""
     # 1-2. Embed the user's message, verbatim, and retrieve
     ==docs = search_magic_items(message)==
 
-    # 3. Augment: paste the retrieved items into the prompt
-    messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user", "content":
-            ==f"<context>\n{docs}\n</context>\n\n{message}"==},
-    ]
+    # 3. Augment: paste the retrieved items in front
+    ==prompt = f"<context>\n{docs}\n</context>\n\n{message}"==
 
-    # 4. Generate: one completion, no tools, no loop
-    reply = litellm.completion(
-        model="vertex_ai/gemini-3.5-flash-lite",
-        vertex_location="global",
-        messages=messages,
-    ).choices[0].message
-    return reply.content, docs
+    # 4. Generate: no tools, so exactly one model call
+    result = await ==Runner.run(agent, prompt)==
+    return result.final_output, docs
 ```
 
 ---
@@ -686,8 +682,6 @@ align: l-lm-cm
 
 ::title::
 
-## One Message, Traced
-
 -# `magic-item-shop-classic-rag.zip`
 
 ::left::
@@ -695,8 +689,8 @@ align: l-lm-cm
 1. The user sends a message.
 2. `run_rag()` searches ChromaDB with the message, verbatim.
 3. ChromaDB returns the 3 nearest items.
-4. The items and the message go to Gemini in one prompt.
-5. Gemini answers. No tools, no loop.
+4. `Runner.run()` sends the items and the message to Gemini in one prompt.
+5. Gemini answers. The agent has no tools, so there's no loop.
 6. The page shows the answer, with the retrieval above it.
 
 ::right::
@@ -819,7 +813,7 @@ color: sky
 ---
 layout: code-right
 codesize: 9.5px
-filename: tools.py
+filename: app.py
 ---
 
 ::left::
@@ -828,27 +822,31 @@ filename: tools.py
 
 -# `magic-item-shop-semantic-rag.zip`
 
-The same index as `magic-item-shop-classic-rag`, behind the `gemini-web-tool-calling` harness, with `get_weather` swapped out.
+`agents-sdk-web` with `get_weather` swapped for `search_magic_items`, over the same index as `magic-item-shop-classic-rag`.
 
-1. `tools.py` opens the index read-only at startup.
+1. `app.py` opens the index read-only at startup.
 2. `collection.query()` embeds the query with the same model and returns the `TOP_K` nearest items.
-3. The tool description tells the model when to search; the parameter description tells it what to write.
+3. `@function_tool` turns the docstring into the tool's schema. The description tells the model when to search; `Args` tells it what to write.
 
-`run_agent()`, `/chat`, and `index.html` are unchanged. The system prompt now plays the shopkeeper.
+The `Runner`, the `SQLiteSession`, `/chat`, and `index.html` are unchanged. The instructions now play the shopkeeper.
 
 ::right::
 
 ```python
-CHROMA_PATH = Path(__file__).parent / "chroma_data"
-TOP_K = 3
+collection = chromadb.PersistentClient(
+    path=str(CHROMA_PATH),
+).get_collection("magic_items")
 
-==collection = chromadb.PersistentClient(==
-    ==path=str(CHROMA_PATH),==
-==).get_collection("magic_items")==
-
+==@function_tool==
 def ==search_magic_items(query: str)== -> str:
-    """Return the TOP_K items whose embeddings
-    are closest to the query's embedding."""
+    =="""Search the shop's inventory for magic items matching==
+    ==a description. Use this whenever a customer asks about==
+    ==items, their properties, or what you have available.==
+
+    ==Args:==
+        ==query: A natural-language description of the items==
+            ==to search for, e.g. 'a sword that deals fire damage'.==
+    =="""==
     results = ==collection.query(==
         ==query_texts=[query], n_results=TOP_K,==
     ==)==
@@ -859,20 +857,12 @@ def ==search_magic_items(query: str)== -> str:
         for doc, dist in zip(documents, distances)
     )
 
-TOOLS = [{"type": "function", "function": {
-    "name": "search_magic_items",
-    "description": ==(==
-        =="Search the shop's inventory for magic items "==
-        =="matching a description. Use this whenever a "==
-        =="customer asks about items, their properties, "==
-        =="or what you have available."==
-    ==),==
-    "parameters": {"type": "object", "properties": {
-        "query": {"type": "string", "description":
-            "A natural-language description of the items "
-            "to search for, e.g. 'a sword that deals fire damage'"},
-    }, "required": ["query"]},
-}}]
+agent = Agent(
+    name="Keeper",
+    instructions=SYSTEM_PROMPT,
+    model=...,  # Gemini via LiteLLM, as in agents-sdk-web
+    ==tools=[search_magic_items],==
+)
 ```
 
 ---
@@ -883,18 +873,16 @@ zoom: 0.9
 
 ::title::
 
-## One Message, Traced
-
 -# `magic-item-shop-semantic-rag.zip`
 
 ::left::
 
 1. The user sends a message.
-2. `run_agent()` sends the context and `TOOLS` to Gemini.
-3. Gemini calls `search_magic_items` with a query it wrote: "sets a sword on fire fire damage sword blade".
-4. The harness runs `collection.query()`.
+2. The `Runner` sends the context and the `search_magic_items` schema to Gemini.
+3. Gemini calls `search_magic_items` with a query it wrote: "sword on fire fire damage flame".
+4. The `Runner` runs the tool, which calls `collection.query()`.
 5. ChromaDB returns the 3 nearest items.
-6. The harness appends the tool result and calls Gemini again.
+6. The `Runner` appends the tool result and calls Gemini again.
 7. Gemini answers with no tool call, ending the loop.
 8. The page shows the answer, with the tool call above it.
 
@@ -907,7 +895,7 @@ sequenceDiagram
         actor U as User
     end
     box rgb(180, 240, 180)
-        participant H as app.py
+        participant H as Runner
     end
     box rgb(240, 240, 180)
         participant L as Gemini
@@ -915,12 +903,12 @@ sequenceDiagram
     participant V as ChromaDB
 
     U->>H: "...sets a sword on fire?"
-    H->>L: Complete context + TOOLS
+    H->>L: Complete context + tools
     L-->>H: tool_call search_magic_items(query)
     H->>V: collection.query(query)
-    V-->>H: Eternal Slayer, Spellsword, ...
+    V-->>H: Flame Tongue, Eternal Slayer, ...
     H->>L: Complete context + tool_response
-    L-->>H: "Ah, seeking to add a touch of..."
+    L-->>H: "Ah. Fire. A simple element..."
     H->>U: Display agent's message
 ```
 
@@ -1269,8 +1257,6 @@ zoom: 0.8
 
 ::title::
 
-## One Message, Traced
-
 -# `magic-item-shop-filesystem-rag.zip`
 
 ::left::
@@ -1317,27 +1303,6 @@ sequenceDiagram
     L-->>H: "Ah, looking to set things ablaze, are we?..."
     H->>U: Display agent's message
 ```
-
----
-
-## Reading List
-
-<br>
-
-- Lewis et al. (2020). [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/abs/2005.11401)
-- Kiyota (2004). [Dialog Navigator](https://repository.kulib.kyoto-u.ac.jp/bitstreams/ad9ce269-ab79-4d62-8d96-88ccf03dc388/download), PhD thesis, Kyoto University
-- Taylor (1968). Question-Negotiation and Information Seeking in Libraries. *College & Research Libraries*
-- Liu et al. (2024). [Lost in the Middle](https://arxiv.org/abs/2307.03172)
-- Gao et al. (2023). [Precise Zero-Shot Dense Retrieval without Relevance Labels (HyDE)](https://arxiv.org/abs/2212.10496)
-- Singh et al. (2025). [Agentic RAG Survey](https://arxiv.org/abs/2501.09136)
-- Pinecone. [Rerankers and Two-Stage Retrieval](https://www.pinecone.io/learn/series/rag/rerankers/)
-- Abheshith. [RAG Fusion with Reciprocal Rank Fusion](https://medium.com/@abheshith7/rag-fusion-with-reciprocal-rank-fusion-73f67934dde7)
-- Microsoft (2023). [Hybrid Retrieval and Reranking](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/azure-ai-search-outperforming-vector-search-with-hybrid-retrieval-and-reranking/3929167)
-- [ChromaDB documentation](https://docs.trychroma.com/)
-- Bustamante (2026). [LLMs Eat Scaffolding for Breakfast](https://www.nicolasbustamante.com/blog/llms-eat-scaffolding)
-- Akita (2026). [Is RAG Dead? Long Context, Grep, and the End of the Mandatory Vector DB](https://akitaonrails.com/en/2026/04/06/rag-is-dead-long-context/)
-- OpenAI. [Agents SDK: Sandboxes](https://developers.openai.com/api/docs/guides/agents/sandboxes)
-
 
 ---
 layout: four-cols-title
@@ -1394,3 +1359,23 @@ Including Retrieval
 - Lives outside the model and outside the prompt
 - Proprietary, too recent, too large, or changes too often
 - Pulled into context at query time by the harness or tool calls (cheap)
+
+---
+
+## Reading List
+
+<br>
+
+- Lewis et al. (2020). [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/abs/2005.11401)
+- Kiyota (2004). [Dialog Navigator](https://repository.kulib.kyoto-u.ac.jp/bitstreams/ad9ce269-ab79-4d62-8d96-88ccf03dc388/download), PhD thesis, Kyoto University
+- Taylor (1968). Question-Negotiation and Information Seeking in Libraries. *College & Research Libraries*
+- Liu et al. (2024). [Lost in the Middle](https://arxiv.org/abs/2307.03172)
+- Gao et al. (2023). [Precise Zero-Shot Dense Retrieval without Relevance Labels (HyDE)](https://arxiv.org/abs/2212.10496)
+- Singh et al. (2025). [Agentic RAG Survey](https://arxiv.org/abs/2501.09136)
+- Pinecone. [Rerankers and Two-Stage Retrieval](https://www.pinecone.io/learn/series/rag/rerankers/)
+- Abheshith. [RAG Fusion with Reciprocal Rank Fusion](https://medium.com/@abheshith7/rag-fusion-with-reciprocal-rank-fusion-73f67934dde7)
+- Microsoft (2023). [Hybrid Retrieval and Reranking](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/azure-ai-search-outperforming-vector-search-with-hybrid-retrieval-and-reranking/3929167)
+- [ChromaDB documentation](https://docs.trychroma.com/)
+- Bustamante (2026). [LLMs Eat Scaffolding for Breakfast](https://www.nicolasbustamante.com/blog/llms-eat-scaffolding)
+- Akita (2026). [Is RAG Dead? Long Context, Grep, and the End of the Mandatory Vector DB](https://akitaonrails.com/en/2026/04/06/rag-is-dead-long-context/)
+- OpenAI. [Agents SDK: Sandboxes](https://developers.openai.com/api/docs/guides/agents/sandboxes)

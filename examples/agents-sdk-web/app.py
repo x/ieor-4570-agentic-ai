@@ -1,4 +1,5 @@
-import json import uuid
+import json
+import uuid
 from pathlib import Path
 
 import requests
