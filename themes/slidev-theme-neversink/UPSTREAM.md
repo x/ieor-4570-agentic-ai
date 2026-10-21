@@ -52,6 +52,16 @@ be customized freely. Local additions so far:
   points at the mono font (Fira Code was never imported, so quotes fell back to
   the system monospace), and `strong`/`b` inherit the surrounding font instead of
   forcing Inter, so bold in titles and quotes stays Victor Mono.
+- `components/Quote.vue` — `<Quote author="…" source="…" href="…">` wraps an inline
+  quote in the quote layout's box (color scheme, border, shadow, quote font) at a size that
+  fits in a column, with a right-aligned "— author, source" line. `color` and `width` work
+  like `AdmonitionType`'s.
+- `layouts/two-cols-title.vue`, `three-cols-title.vue`, `four-cols-title.vue` — a bottom row of
+  optional cells, one under each column, lined up across columns: `::left-bottom::`,
+  `::middle-bottom::`, `::right-bottom::` (`::one-bottom::`…`::four-bottom::` in four-cols).
+  Each spans its column's width and takes its alignment. Empty, the row takes no height. With
+  a top title the column row is `1fr`, so the bottom cells sit at the bottom of the slide; the
+  footer-title variant's title and full-width `end` row each move down one row to make room.
 
 To pull in upstream changes later, diff against a fresh checkout of the upstream
 repo at a newer tag and apply what you want by hand.

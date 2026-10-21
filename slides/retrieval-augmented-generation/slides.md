@@ -1154,22 +1154,22 @@ columns: is-8
 
 ## RAG with a filesystem, `ls`, `cat`, and `grep`
 
-RAG is dead. Long live RAG. (And a preview of coding agents)
+Semantic RAG is dead. Long live RAG.
 
 ::left::
 
 Increasingly, agents demonstrate better RAG performance using a `Bash` tool to call Unix tools like `ls`, `cat`, and `grep` over a filesystem of data rather than semantic search architectures.
 
 - They have access to a local, virtual, or sandboxed filesystem.
-- The have a `Bash` tool capable of calling read-only Unix tools like:
+- They have a `Bash` tool capable of calling read-only Unix tools like:
     - `find` / `ls` - Find files by path matching
     - `grep` - Find files by content matching
     - `cat` / `head` / `tail` - Output a file
 - They can *glob* and *pipe* these tools
   ```bash
-  cat financials/*.md | grep AAPL`
+  cat financials/*.md | grep AAPL
   ```
-  allowing zero-cost tool composition.
+  allowing a zero-token-cost alternative to tool composition.
 
 A common technique is to organize "cold context" into `.md` files and folders. Sometimes using markdown frontmatter to act as a "description index."
 
@@ -1356,9 +1356,12 @@ Including Retrieval
 
 ###### Non-Parametric Knowledge
 
-- Lives outside the model and outside the prompt
-- Proprietary, too recent, too large, or changes too often
-- Pulled into context at query time by the harness or tool calls (cheap)
+- **Lives outside the model and outside the prompt**
+- **Proprietary, too recent, too large, or changes too often**
+- **Pulled into context at query time by the harness or tool calls (cheap)**
+- **Examples:**
+    - The web
+    - **Documents**
 
 ---
 

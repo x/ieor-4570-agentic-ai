@@ -1,0 +1,3 @@
+# subway-survey-text2sql
+
+`agents-sdk-web` turned into the simplest possible Text2SQL agent, over a 2019 survey of 10,704 NYC subway riders. `build_db.py` runs once, offline, and loads the CSV into a cleaned DuckDB file. The agent has one tool, `run_sql`, and no other knowledge of the data: it discovers the columns and guesses the values. The database connection is read-only, with file access and config changes locked. Run `gcloud auth application-default login` and `uv run build_db.py` once, then `uv run app.py` and open http://localhost:8000. Try: "How happy are L train riders?" `subway-survey-text2sql-improved` adds the lecture's layers.

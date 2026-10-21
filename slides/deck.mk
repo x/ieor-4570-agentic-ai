@@ -1,7 +1,7 @@
 # Shared targets for one slide deck. Each deck's Makefile is just `include ../deck.mk`.
 #   make up       install deps and run the dev server on :3030
 #   make export   export to <deck>.pdf in this folder (override with OUT=path)
-DECK := $(notdir $(CURDIR))
+DECK := $(shell basename "$(CURDIR)")
 OUT  ?= $(DECK).pdf
 PORT ?= 3030
 .PHONY: up install export

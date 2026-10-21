@@ -1,0 +1,12 @@
+[project]
+name = "subway-survey-text2sql"
+version = "0.1.0"
+description = "The simplest Text2SQL agent: run_sql over the 2019 NYC subway rider survey, with the OpenAI Agents SDK, DuckDB, and Gemini"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "openai-agents[litellm]>=0.23",
+    "google-cloud-aiplatform>=1.40.0",
+    "duckdb>=1.1",
+]

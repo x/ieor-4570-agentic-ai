@@ -113,6 +113,15 @@ const flexclass = computed(() => {
     <div v-if="$slots.right" class="right-col" :class="alignment.r">
       <slot name="right" />
     </div>
+    <div v-if="$slots['left-bottom']" class="left-bottom col-bottom" :class="alignment.l">
+      <slot name="left-bottom" />
+    </div>
+    <div v-if="$slots['middle-bottom']" class="middle-bottom col-bottom" :class="alignment.m">
+      <slot name="middle-bottom" />
+    </div>
+    <div v-if="$slots['right-bottom']" class="right-bottom col-bottom" :class="alignment.r">
+      <slot name="right-bottom" />
+    </div>
     <div v-if="$slots.default" class="end">
       <slot name="default" />
     </div>
@@ -124,7 +133,7 @@ const flexclass = computed(() => {
 .slidev-layout.three-cols-footer {
   display: grid;
   grid-template-columns: repeat(12, 1fr); /* 12 columns */
-  grid-template-rows: auto 1fr auto; /* top header and content */
+  grid-template-rows: auto 1fr auto auto; /* title, columns, bottom row, end */
 }
 
 .slidev-layout.three-cols {
@@ -139,7 +148,7 @@ const flexclass = computed(() => {
 }
 
 .slidev-layout.three-cols-footer .title {
-  grid-area: 3 / 1 / 4 / span 12; /* full width */
+  grid-area: 4 / 1 / 5 / span 12; /* full width */
   margin-bottom: 1rem;
 }
 
@@ -182,8 +191,30 @@ const flexclass = computed(() => {
   grid-area: 4 / 1 / 5 / span 12; /* full width */
 }
 
+.slidev-layout.three-cols-footer .end {
+  grid-area: 5 / 1 / 6 / span 12;
+}
+
 .slidev-layout.three-cols .end {
   grid-area: 3 / 1 / 4 / span 12; /* full width */
+}
+
+/* Bottom row: one optional cell under each column, lined up across columns.
+   Empty, it takes no height. */
+.slidev-layout.three-cols .col-bottom,
+.slidev-layout.three-cols-header .col-bottom,
+.slidev-layout.three-cols-footer .col-bottom {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5rem;
+}
+.slidev-layout.three-cols .left-bottom,
+.slidev-layout.three-cols-header .left-bottom,
+.slidev-layout.three-cols-footer .left-bottom,
+.slidev-layout.three-cols .middle-bottom,
+.slidev-layout.three-cols-header .middle-bottom,
+.slidev-layout.three-cols-footer .middle-bottom {
+  margin-right: 2rem;
 }
 </style>
 
@@ -213,5 +244,32 @@ const flexclass = computed(() => {
 
 .three-cols .right-col {
   grid-area: 1 / v-bind(colwidth.l + colwidth.m + 1) / 2 / span v-bind(colwidth.r);
+}
+
+.three-cols-footer .left-bottom,
+.three-cols-header .left-bottom {
+  grid-area: 3 / 1 / 4 / span v-bind(colwidth.l);
+}
+
+.three-cols .left-bottom {
+  grid-area: 2 / 1 / 3 / span v-bind(colwidth.l);
+}
+
+.three-cols-footer .middle-bottom,
+.three-cols-header .middle-bottom {
+  grid-area: 3 / v-bind(colwidth.l + 1) / 4 / span v-bind(colwidth.m);
+}
+
+.three-cols .middle-bottom {
+  grid-area: 2 / v-bind(colwidth.l + 1) / 3 / span v-bind(colwidth.m);
+}
+
+.three-cols-footer .right-bottom,
+.three-cols-header .right-bottom {
+  grid-area: 3 / v-bind(colwidth.l + colwidth.m + 1) / 4 / span v-bind(colwidth.r);
+}
+
+.three-cols .right-bottom {
+  grid-area: 2 / v-bind(colwidth.l + colwidth.m + 1) / 3 / span v-bind(colwidth.r);
 }
 </style>

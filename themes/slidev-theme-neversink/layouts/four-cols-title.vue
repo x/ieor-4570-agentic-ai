@@ -115,6 +115,18 @@ const flexclass = computed(() => {
     <div v-if="$slots.four" class="col-d" :class="alignment.d">
       <slot name="four" />
     </div>
+    <div v-if="$slots['one-bottom']" class="one-bottom col-bottom" :class="alignment.a">
+      <slot name="one-bottom" />
+    </div>
+    <div v-if="$slots['two-bottom']" class="two-bottom col-bottom" :class="alignment.b">
+      <slot name="two-bottom" />
+    </div>
+    <div v-if="$slots['three-bottom']" class="three-bottom col-bottom" :class="alignment.c">
+      <slot name="three-bottom" />
+    </div>
+    <div v-if="$slots['four-bottom']" class="four-bottom col-bottom" :class="alignment.d">
+      <slot name="four-bottom" />
+    </div>
     <div v-if="$slots.default" class="end">
       <slot name="default" />
     </div>
@@ -126,7 +138,7 @@ const flexclass = computed(() => {
 .slidev-layout.four-cols-footer {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr auto auto; /* title, columns, bottom row, end */
 }
 
 .slidev-layout.four-cols {
@@ -141,7 +153,7 @@ const flexclass = computed(() => {
 }
 
 .slidev-layout.four-cols-footer .title {
-  grid-area: 3 / 1 / 4 / span 12;
+  grid-area: 4 / 1 / 5 / span 12;
   margin-bottom: 1rem;
 }
 
@@ -187,8 +199,33 @@ const flexclass = computed(() => {
   grid-area: 4 / 1 / 5 / span 12;
 }
 
+.slidev-layout.four-cols-footer .end {
+  grid-area: 5 / 1 / 6 / span 12;
+}
+
 .slidev-layout.four-cols .end {
   grid-area: 3 / 1 / 4 / span 12;
+}
+
+/* Bottom row: one optional cell under each column, lined up across columns.
+   Empty, it takes no height. */
+.slidev-layout.four-cols .col-bottom,
+.slidev-layout.four-cols-header .col-bottom,
+.slidev-layout.four-cols-footer .col-bottom {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5rem;
+}
+.slidev-layout.four-cols .one-bottom,
+.slidev-layout.four-cols-header .one-bottom,
+.slidev-layout.four-cols-footer .one-bottom,
+.slidev-layout.four-cols .two-bottom,
+.slidev-layout.four-cols-header .two-bottom,
+.slidev-layout.four-cols-footer .two-bottom,
+.slidev-layout.four-cols .three-bottom,
+.slidev-layout.four-cols-header .three-bottom,
+.slidev-layout.four-cols-footer .three-bottom {
+  margin-right: 1.5rem;
 }
 </style>
 
@@ -221,5 +258,41 @@ const flexclass = computed(() => {
 }
 .four-cols .col-d {
   grid-area: 1 / v-bind(colwidth.a + colwidth.b + colwidth.c + 1) / 2 / span v-bind(colwidth.d);
+}
+
+.four-cols-footer .one-bottom,
+.four-cols-header .one-bottom {
+  grid-area: 3 / 1 / 4 / span v-bind(colwidth.a);
+}
+
+.four-cols .one-bottom {
+  grid-area: 2 / 1 / 3 / span v-bind(colwidth.a);
+}
+
+.four-cols-footer .two-bottom,
+.four-cols-header .two-bottom {
+  grid-area: 3 / v-bind(colwidth.a + 1) / 4 / span v-bind(colwidth.b);
+}
+
+.four-cols .two-bottom {
+  grid-area: 2 / v-bind(colwidth.a + 1) / 3 / span v-bind(colwidth.b);
+}
+
+.four-cols-footer .three-bottom,
+.four-cols-header .three-bottom {
+  grid-area: 3 / v-bind(colwidth.a + colwidth.b + 1) / 4 / span v-bind(colwidth.c);
+}
+
+.four-cols .three-bottom {
+  grid-area: 2 / v-bind(colwidth.a + colwidth.b + 1) / 3 / span v-bind(colwidth.c);
+}
+
+.four-cols-footer .four-bottom,
+.four-cols-header .four-bottom {
+  grid-area: 3 / v-bind(colwidth.a + colwidth.b + colwidth.c + 1) / 4 / span v-bind(colwidth.d);
+}
+
+.four-cols .four-bottom {
+  grid-area: 2 / v-bind(colwidth.a + colwidth.b + colwidth.c + 1) / 3 / span v-bind(colwidth.d);
 }
 </style>
