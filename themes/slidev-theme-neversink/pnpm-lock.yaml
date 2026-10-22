@@ -26,6 +26,9 @@ importers:
       '@iconify/vue':
         specifier: ^4.3.0
         version: 4.3.0(vue@3.5.26(typescript@5.9.3))
+      '@mdit/plugin-dl':
+        specifier: 0.19.0
+        version: 0.19.0(markdown-it@14.1.0)
       '@mdit/plugin-sub':
         specifier: ^0.12.0
         version: 0.12.0(markdown-it@14.1.0)
@@ -746,6 +749,15 @@ packages:
   '@mdit-vue/types@3.0.2':
     resolution: {integrity: sha512-00aAZ0F0NLik6I6Yba2emGbHLxv+QYrPH00qQ5dFKXlAo1Ll2RHDXwY7nN2WAfrx2pP+WrvSRFTGFCNGdzBDHw==}
     engines: {node: '>=20.0.0'}
+
+  '@mdit/plugin-dl@0.19.0':
+    resolution: {integrity: sha512-MVMJ5Zq85UhZH3Cw+Pi3UpvXcQ/pu6OIpszjsQvrnsbD+zFoAi5SKlH1JoLUhpr8mTRvMg+npIR+lNQtucCNgg==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      markdown-it: ^14.1.0
+    peerDependenciesMeta:
+      markdown-it:
+        optional: true
 
   '@mdit/plugin-sub@0.12.0':
     resolution: {integrity: sha512-27kKkSVkymc+2RNc5XOYkeXip5PgHZPUnHpxUvkpnairLwyHsXb8/gzr9zd5arVkip86rcdy9LIvnF7zO0dNVQ==}
@@ -4038,6 +4050,12 @@ snapshots:
       markdown-it: 14.1.0
 
   '@mdit-vue/types@3.0.2': {}
+
+  '@mdit/plugin-dl@0.19.0(markdown-it@14.1.0)':
+    dependencies:
+      '@types/markdown-it': 14.1.2
+    optionalDependencies:
+      markdown-it: 14.1.0
 
   '@mdit/plugin-sub@0.12.0(markdown-it@14.1.0)':
     dependencies:

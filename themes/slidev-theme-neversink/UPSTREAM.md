@@ -62,6 +62,12 @@ be customized freely. Local additions so far:
   Each spans its column's width and takes its alignment. Empty, the row takes no height. With
   a top title the column row is `1fr`, so the bottom cells sit at the bottom of the slide; the
   footer-title variant's title and full-width `end` row each move down one row to make room.
+- `vite.config.ts` + `styles/definitions.css`: definition lists via `@mdit/plugin-dl` (0.19.0;
+  1.x needs markdown-it 15). `Term` on one line, `: definition` on the next, a blank line between
+  entries. Terms render bold in a left column sized to the longest term, rows packed tight.
+  Registered in `markdownSetup`, the hook Slidev 52 calls, along with sub (`H~2~O`) and mark
+  (`==highlight==`), which had stopped working under the old `markdownItSetup` key. The
+  marker-aware list rule is still under `markdownItSetup`, which Slidev 52 ignores.
 
 To pull in upstream changes later, diff against a fresh checkout of the upstream
 repo at a newer tag and apply what you want by hand.

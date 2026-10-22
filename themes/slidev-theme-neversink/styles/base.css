@@ -82,7 +82,7 @@
 
 /* ==foo== inside a fenced code block (see setup/shiki.ts) */
 .slidev-layout pre .code-mark {
-  background: #fde68a; /* amber-200, same as <mark> */
+  background: #fde68a; /* amber-200 */
   border-radius: 0.2em;
   padding: 0.05em 0;
 }
@@ -101,14 +101,16 @@
 
 /* the highlighted terms from markdown highlighter == == */
 .slidev-layout mark {
-  @apply bg-amber-200;
-  @apply text-amber-600;
-  font-weight: 300;
-  padding-left: 0.4em;
-  padding-right: 0.4em;
-  padding-top: 0.2em;
-  padding-bottom: 0.2em;
-  border-radius: 0.4em;
+  background: #fef3c7; /* amber-100: a soft wash that keeps the text's own color */
+  color: inherit;
+  padding: 0.1em 0.3em;
+  border-radius: 0.25em;
+  box-decoration-break: clone; /* each wrapped line gets its own padding and corners */
+  -webkit-box-decoration-break: clone;
+}
+/* inline code inside a highlight takes the highlight (beats the !important inline-code rule below) */
+.slidev-layout mark:not(pre) > code:not([class*="language-"]) {
+  background: transparent !important;
 }
 
 /* every code element uses the theme mono font (Slidev core applies uno's font-mono otherwise) */

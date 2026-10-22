@@ -1,0 +1,14 @@
+[project]
+name = "nyc-311-agent-langfuse"
+version = "0.1.0"
+description = "The improved NYC 311 agent, traced and evaluated with Langfuse"
+requires-python = ">=3.11"
+dependencies = [
+    "openai-agents[litellm]>=0.24",
+    "google-cloud-aiplatform>=1.40.0",
+    "duckdb>=1.1",
+    "langfuse>=5.0.3",
+    "openinference-instrumentation-openai-agents>=2.5.3",
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+]

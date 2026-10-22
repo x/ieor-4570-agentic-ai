@@ -8,6 +8,7 @@ import './colors.css'
 import './neversink-c.css'
 import './dark-mode.css'
 import './lists.css'
+import './definitions.css'
 
 // import './code.css'
 // import './layout.css'

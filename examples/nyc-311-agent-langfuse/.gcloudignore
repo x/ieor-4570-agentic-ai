@@ -1,0 +1,11 @@
+# What `gcloud run deploy --source` uploads. Unlike .gitignore, it keeps data/311.duckdb and
+# data/311_mappings.json: the agent opens both at startup, and build_mappings.py only runs offline.
+.gcloudignore
+.git
+.gitignore
+.venv/
+__pycache__/
+.env
+data/raw/
+data/*.parquet
+conversations.db*
