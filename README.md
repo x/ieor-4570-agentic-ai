@@ -118,7 +118,16 @@ Tracing agents with OpenTelemetry and Langfuse.
 
 - [nyc-311-agent-langfuse](examples/nyc-311-agent-langfuse)
 
-### Multi-agent Architectures
+### Multi-Agent Architectures
+
+[slides](https://peticol.as/ieor-4570-agentic-ai/slides/multi-agent-architectures/)
+
+Orchestration patterns, handoffs, human-in-the-loop, and deep research.
+
+- [wikipedia-deck-critic](examples/wikipedia-deck-critic)
+- [nyc-data-desk](examples/nyc-data-desk)
+- [wikipedia-deck-researchers](examples/wikipedia-deck-researchers)
+- [wikipedia-deep-research](examples/wikipedia-deep-research)
 
 ### Sessions, State, and Memory
 
@@ -145,3 +154,9 @@ A web chatbot with a weather tool that shows every tool call the harness runs be
 [demo](https://guardrails-password-challenge-web-16155576949.us-east1.run.app) · [src](examples/guardrails-password-challenge-web)
 
 Get the model to reveal a password across seven levels, each stacking a new guardrail on the last.
+
+### wikipedia-deep-research
+
+[demo](https://wikipedia-deep-research-16155576949.us-east1.run.app) · [src](examples/wikipedia-deep-research)
+
+Ask a question from a starting Wikipedia article and watch a Lead fan out parallel Researchers, then a Writer turn their findings into a cited report.

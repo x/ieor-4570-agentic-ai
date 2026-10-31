@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false  # one broken demo shouldn't cancel the others
       matrix:
-        example: [five-questions-web, gemini-web-tool-calling, guardrails-password-challenge-web]
+        example: [five-questions-web, gemini-web-tool-calling, guardrails-password-challenge-web, wikipedia-deep-research]
     steps:
       - uses: actions/checkout@v4
         with:

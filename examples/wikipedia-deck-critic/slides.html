@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Deck</title>
+        <style>
+            body {
+                font-family: system-ui, sans-serif;
+            }
+            .remark-slide-content {
+                font-size: 26px;
+                padding: 1em 3em;
+            }
+            .remark-slide-content h1 {
+                font-weight: 500;
+                font-size: 1.8em;
+            }
+            .remark-slide-content h2 {
+                font-weight: 400;
+                font-size: 1.2em;
+                color: #555;
+            }
+            .remark-slide-content li {
+                margin: 0.4em 0;
+                line-height: 1.35;
+            }
+            .remark-slide-content a {
+                color: #555;
+                font-size: 0.7em;
+            }
+        </style>
+    </head>
+    <body>
+        <textarea id="source">{{markdown}}</textarea>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/remark/0.14.0/remark.min.js"></script>
+        <script>
+            remark.create({ ratio: "16:9" });
+        </script>
+    </body>
+</html>

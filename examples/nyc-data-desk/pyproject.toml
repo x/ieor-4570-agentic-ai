@@ -1,0 +1,12 @@
+[project]
+name = "nyc-data-desk"
+version = "0.1.0"
+description = "The router pattern: a data desk hands each question to the Text2SQL analyst for its dataset, NYC 311 requests or the subway rider survey"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "openai-agents[litellm]>=0.22",
+    "google-cloud-aiplatform>=1.40.0",
+    "duckdb>=1.1",
+]

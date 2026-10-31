@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>NYC Data Desk</title>
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: system-ui, sans-serif;
+                padding: 2rem;
+                color: #111;
+            }
+            main {
+                max-width: 760px;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            section {
+                border: 1px solid #e0e0e0;
+                padding: 1.25rem 1.5rem;
+            }
+            h1 {
+                font-size: 1rem;
+                font-weight: 600;
+            }
+            h2 {
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: #999;
+                font-weight: 400;
+                margin-bottom: 0.75rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+            }
+            h2 span {
+                text-transform: none;
+                letter-spacing: 0;
+            }
+            #message {
+                width: 100%;
+                padding: 0.6rem 0;
+                border: none;
+                border-bottom: 1px solid #e0e0e0;
+                font-size: 1rem;
+                outline: none;
+            }
+            #message:focus {
+                border-bottom-color: #000;
+            }
+            #controls {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                align-items: center;
+                margin-top: 1rem;
+                font-size: 0.85rem;
+            }
+            #controls span {
+                color: #999;
+            }
+            button {
+                padding: 0.75rem 1.5rem;
+                background: #000;
+                color: #fff;
+                border: none;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                cursor: pointer;
+            }
+            button.secondary {
+                background: #fff;
+                color: #000;
+                border: 1px solid #000;
+            }
+            button:disabled {
+                opacity: 0.3;
+            }
+            ol {
+                list-style: none;
+                font-size: 0.85rem;
+                line-height: 1.7;
+            }
+            .agent {
+                font-weight: 600;
+            }
+            .error {
+                color: #dc2626;
+            }
+            #conversation li {
+                margin-bottom: 0.9rem;
+                line-height: 1.5;
+                white-space: pre-wrap;
+            }
+            #conversation .user {
+                color: #666;
+            }
+            .empty {
+                color: #999;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1>NYC Data Desk: a router hands your question to the analyst for its dataset, or asks you to pin it down</h1>
+
+            <section>
+                <h2>Task <span id="in-charge"></span></h2>
+                <form id="task">
+                    <input id="message" placeholder="Ask about NYC 311 requests or the subway rider survey..." autocomplete="off"
+                        value="How many rodent complaints were there in 2024?" />
+                    <div id="controls">
+                        <button id="send" type="submit">Send</button>
+                        <button id="new" type="button" class="secondary">New conversation</button>
+                        <label><input type="checkbox" id="sticky" checked /> Keep talking to whoever's in charge
+                            <span>(off: every message starts at the desk)</span></label>
+                    </div>
+                </form>
+            </section>
+
+            <section>
+                <h2>Activity <span id="status"></span></h2>
+                <ol id="activity"><li class="empty">Each agent's steps appear here.</li></ol>
+            </section>
+
+            <section>
+                <h2>Output</h2>
+                <ol id="conversation"><li class="empty">The conversation appears here.</li></ol>
+            </section>
+        </main>
+
+        <script src="/context-panel.js"></script>
+        <script>
+            const $ = (id) => document.getElementById(id);
+            let sessionId = crypto.randomUUID();
+            let source = null;
+
+            function line(list, agent, text, cls = "") {
+                list.querySelector(".empty")?.remove();
+                const li = document.createElement("li");
+                li.className = cls;
+                if (agent) {
+                    const name = document.createElement("span");
+                    name.className = "agent";
+                    name.textContent = agent + (list === $("conversation") ? ": " : " ");
+                    li.appendChild(name);
+                }
+                li.append(text);
+                list.appendChild(li);
+            }
+
+            function finish(message) {
+                $("status").textContent = message;
+                $("send").disabled = false;
+                source.close();
+                $("message").focus();
+            }
+
+            $("task").addEventListener("submit", (e) => {
+                e.preventDefault();
+                const message = $("message").value.trim();
+                if (!message) return;
+                if (source) source.close();
+                const params = new URLSearchParams({ session_id: sessionId, message, sticky: $("sticky").checked });
+
+                line($("conversation"), "You", message, "user");
+                $("message").value = "";
+                $("activity").replaceChildren();
+                $("status").textContent = "running";
+                $("send").disabled = true;
+
+                source = new EventSource("/chat?" + params);
+                source.onmessage = (msg) => {
+                    const event = JSON.parse(msg.data);
+                    if (event.type === "context") showContext(sessionId);
+                    else if (event.type === "activity") line($("activity"), event.agent, event.text);
+                    else if (event.type === "answer") {
+                        line($("conversation"), event.agent, event.text);
+                        $("in-charge").textContent = "talking to " + event.agent;
+                        finish("");
+                    } else if (event.type === "error") {
+                        line($("activity"), "", event.message, "error");
+                        finish("failed");
+                    }
+                };
+                source.onerror = () => {
+                    line($("activity"), "", "Lost the connection to the server.", "error");
+                    finish("failed");
+                };
+            });
+
+            $("new").addEventListener("click", async () => {
+                if (source) source.close();
+                await fetch("/clear?session_id=" + sessionId, { method: "POST" });
+                sessionId = crypto.randomUUID();
+                resetContext();
+                $("conversation").innerHTML = '<li class="empty">The conversation appears here.</li>';
+                $("activity").innerHTML = '<li class="empty">Each agent\'s steps appear here.</li>';
+                $("in-charge").textContent = "";
+                $("status").textContent = "";
+                $("send").disabled = false;
+            });
+        </script>
+    </body>
+</html>

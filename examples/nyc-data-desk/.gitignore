@@ -1,0 +1,13 @@
+# Virtual environment. uv recreates it from pyproject.toml + uv.lock.
+.venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Built by build_data.py
+data/*.duckdb
+data/*_mappings.json
+
+# macOS
+.DS_Store
