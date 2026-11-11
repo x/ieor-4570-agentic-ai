@@ -155,11 +155,15 @@ The agent loop, prompt caching, tool pipeline, and memory system inside Claude C
 
 Play five questions against Gemini while watching its context, then rewind and ask again to see that no object was ever chosen.
 
+![five-questions-web](readme-images/five-questions-web.png)
+
 ### gemini-web-tool-calling
 
 [demo](https://gemini-web-tool-calling-16155576949.us-east1.run.app) · [src](examples/gemini-web-tool-calling)
 
 A web chatbot with a weather tool that shows every tool call the harness runs before the answer.
+
+![gemini-web-tool-calling](readme-images/gemini-web-tool-calling.png)
 
 ### guardrails-password-challenge-web
 
@@ -167,14 +171,20 @@ A web chatbot with a weather tool that shows every tool call the harness runs be
 
 Get the model to reveal a password across seven levels, each stacking a new guardrail on the last.
 
+![guardrails-password-challenge-web](readme-images/guardrails-password-challenge-web.png)
+
 ### wikipedia-deep-research
 
 [demo](https://wikipedia-deep-research-16155576949.us-east1.run.app) · [src](examples/wikipedia-deep-research)
 
 Ask a question from a starting Wikipedia article and watch a Lead fan out parallel Researchers, then a Writer turn their findings into a cited report.
 
+![wikipedia-deep-research](readme-images/wikipedia-deep-research.png)
+
 ### kv-cache-web
 
 [demo](https://kv-cache-web-16155576949.us-east1.run.app) · [src](examples/kv-cache-web)
 
 Two agents read The Hound of the Baskervilles chapter by chapter; one prompt starts with the current time, the other with today's date. Watch time to first token and cached tokens diverge.
+
+![kv-cache-web](readme-images/kv-cache-web.png)
