@@ -54,7 +54,7 @@ function checkvars() {
     if ($frontmatter.layout == 'end') {
       fg.value = `text-neutral-100`
       bg.value = `bg-neutral-800`
-    } else if ($frontmatter.layout == 'side-title') {
+    } else if ($frontmatter.layout == 'side-title' || $frontmatter.layout == 'question-answer') {
       // if side title
       if ($frontmatter.side && ($frontmatter.side == 'right' || $frontmatter.side == 'r')) {
         process_colors()

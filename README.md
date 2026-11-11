@@ -133,6 +133,18 @@ Orchestration patterns, handoffs, human-in-the-loop, and deep research.
 
 ### KV-Cache
 
+[slides](https://peticol.as/ieor-4570-agentic-ai/slides/kv-cache/)
+
+How the KV-cache speeds up generation, and how prompt caching across requests cuts agent latency and cost.
+
+- [kv-cache-web](examples/kv-cache-web)
+
+### What Can We Learn From Claude Code
+
+[slides](https://peticol.as/ieor-4570-agentic-ai/slides/claude-code/)
+
+The agent loop, prompt caching, tool pipeline, and memory system inside Claude Code's leaked source.
+
 ### Coding Agents
 
 ## Live Demos
@@ -160,3 +172,9 @@ Get the model to reveal a password across seven levels, each stacking a new guar
 [demo](https://wikipedia-deep-research-16155576949.us-east1.run.app) · [src](examples/wikipedia-deep-research)
 
 Ask a question from a starting Wikipedia article and watch a Lead fan out parallel Researchers, then a Writer turn their findings into a cited report.
+
+### kv-cache-web
+
+[demo](https://kv-cache-web-16155576949.us-east1.run.app) · [src](examples/kv-cache-web)
+
+Two agents read The Hound of the Baskervilles chapter by chapter; one prompt starts with the current time, the other with today's date. Watch time to first token and cached tokens diverge.

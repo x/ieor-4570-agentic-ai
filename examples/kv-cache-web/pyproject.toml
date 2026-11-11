@@ -1,0 +1,11 @@
+[project]
+name = "kv-cache-web"
+version = "0.1.0"
+description = "Two agents read a novel chapter by chapter; a timestamp in one prompt breaks Gemini's cache"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "openai-agents[litellm]>=0.22",
+    "google-cloud-aiplatform>=1.40.0",
+]

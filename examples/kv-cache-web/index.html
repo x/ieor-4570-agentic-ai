@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>KV-Cache Web</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: system-ui, sans-serif;
+                padding: 2rem 1rem;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            #controls {
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+                margin-bottom: 1.5rem;
+            }
+            #status {
+                color: #999;
+                font-size: 0.875rem;
+            }
+            button {
+                padding: 0.75rem 1.5rem;
+                background: #000;
+                color: #fff;
+                border: none;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                cursor: pointer;
+            }
+            button:disabled {
+                opacity: 0.3;
+            }
+            .grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            .charts {
+                margin-bottom: 1.5rem;
+            }
+            .panel {
+                border: 1px solid #e0e0e0;
+                padding: 1rem;
+                min-width: 0;
+            }
+            h2 {
+                font-size: 1rem;
+                margin-bottom: 0.25rem;
+            }
+            /* The clock line flashes when a request sends a different one. */
+            @keyframes pulse {
+                from {
+                    background: #fcd34d;
+                }
+                to {
+                    background: transparent;
+                }
+            }
+            .clock.pulse {
+                animation: pulse 1.5s ease-out;
+            }
+            .stats {
+                font-family: ui-monospace, monospace;
+                font-size: 0.8rem;
+                margin-bottom: 0.75rem;
+            }
+            .msg {
+                font-family: ui-monospace, monospace;
+                font-size: 0.75rem;
+                padding: 0.35rem 0.6rem;
+                margin-bottom: 0.25rem;
+                display: flex;
+                gap: 0.5rem;
+            }
+            .msg .text {
+                flex: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .msg .text.full {
+                white-space: pre-wrap;
+            }
+            .meta {
+                font-family: ui-monospace, monospace;
+                font-size: 0.7rem;
+                color: #999;
+                padding: 0 0.6rem 0.4rem;
+            }
+            .msg.cached {
+                background: #ecfdf5;
+                border-left: 3px solid #10b981;
+            }
+            .msg.new {
+                background: #fff7ed;
+                border-left: 3px solid #f59e0b;
+            }
+            .msg.output {
+                background: #f5f5f5;
+                border-left: 3px solid #999;
+            }
+            .msg .role {
+                text-transform: uppercase;
+                color: #999;
+            }
+            @media (max-width: 700px) {
+                .grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="controls">
+            <button id="next-btn">Next chapter</button>
+            <button id="all-btn">Run all</button>
+            <button id="reset-btn">Reset</button>
+            <span id="status"></span>
+        </div>
+
+        <div class="panel charts">
+            <canvas id="chart"></canvas>
+        </div>
+
+        <div class="grid">
+            <div class="panel" id="changing">
+                <h2>Cache Invalidated Each Turn</h2>
+                <div class="stats"></div>
+                <div class="context"></div>
+            </div>
+            <div class="panel" id="fixed">
+                <h2>KV-Cache Preserved</h2>
+                <div class="stats"></div>
+                <div class="context"></div>
+            </div>
+        </div>
+
+        <script>
+            const SIDES = {
+                changing: { label: "Changing time", color: "#f59e0b" },
+                fixed: { label: "Fixed date", color: "#10b981" },
+            };
+            const nextBtn = document.getElementById("next-btn");
+            const allBtn = document.getElementById("all-btn");
+            const resetBtn = document.getElementById("reset-btn");
+            const status = document.getElementById("status");
+
+            let sessionId = null;
+            let chapter = 0;
+            let chapterCount = 0;
+            let lastHashes = { changing: [], fixed: [] };
+            let lastClock = {};
+            // Each request's timing and cache hits, shown beside the user message it sent.
+            let turns = { changing: [], fixed: [] };
+
+            // One chart, two axes: time to first token (solid, left) and cached tokens (dashed, right).
+            const METRICS = [
+                { key: "ttft_ms", label: "ms to first token", axis: "ms", dash: [] },
+                { key: "cached_tokens", label: "cached tokens", axis: "tokens", dash: [6, 4] },
+            ];
+            const chart = new Chart(document.getElementById("chart"), {
+                type: "line",
+                data: {
+                    labels: [],
+                    datasets: METRICS.flatMap((m) =>
+                        Object.entries(SIDES).map(([side, s]) => ({
+                            label: `${s.label}: ${m.label}`,
+                            side,
+                            metric: m.key,
+                            data: [],
+                            yAxisID: m.axis,
+                            borderColor: s.color,
+                            backgroundColor: s.color,
+                            borderDash: m.dash,
+                        })),
+                    ),
+                },
+                options: {
+                    animation: false,
+                    aspectRatio: 5,
+                    plugins: { legend: { position: "top", labels: { boxWidth: 24 } } },
+                    scales: {
+                        x: { title: { display: true, text: "Chapter" } },
+                        ms: { position: "left", beginAtZero: true, title: { display: true, text: "ms to first token" } },
+                        tokens: {
+                            position: "right",
+                            beginAtZero: true,
+                            grid: { drawOnChartArea: false },
+                            title: { display: true, text: "cached tokens" },
+                        },
+                    },
+                },
+            });
+
+            function plot(label, data) {
+                chart.data.labels.push(label);
+                chart.data.datasets.forEach((d) => d.data.push(data[d.side][d.metric]));
+                chart.update();
+            }
+
+            const cents = (dollars) => `${(dollars * 100).toFixed(3)}¢`;
+
+            function renderSide(key, side) {
+                const panel = document.getElementById(key);
+                // The clock line pulses when it differs from the one the last request sent.
+                const [clockLine, ...rest] = side.system.split("\n");
+                const pulse = lastClock[key] !== undefined && lastClock[key] !== clockLine;
+                lastClock[key] = clockLine;
+                const pct = side.input_tokens ? Math.round((100 * side.cached_tokens) / side.input_tokens) : 0;
+                panel.querySelector(".stats").textContent =
+                    `${side.ttft_ms} ms to first token · ` +
+                    `${side.cached_tokens.toLocaleString()} of ${side.input_tokens.toLocaleString()} input tokens cached (${pct}%)`;
+
+                // The prefix this request shares with the last one is all the cache could hold.
+                const hashes = side.context.map((m) => m.hash);
+                let same = 0;
+                while (same < hashes.length && hashes[same] === lastHashes[key][same]) same++;
+                lastHashes[key] = hashes;
+                turns[key].push(side);
+                const total = turns[key].reduce((sum, t) => sum + t.cost, 0);
+                side.total_cost = total;
+                panel.querySelector(".stats").textContent += ` · ${cents(total)} spent so far`;
+
+                const list = panel.querySelector(".context");
+                list.innerHTML = "";
+                // Each reply carries the numbers of the request that produced it.
+                let reply = 0;
+                [...side.context, side.reply].forEach((m, i) => {
+                    const div = document.createElement("div");
+                    div.className = "msg " + (i === side.context.length ? "output" : i < same ? "cached" : "new");
+                    const role = document.createElement("span");
+                    role.className = "role";
+                    role.textContent = m.role;
+                    div.appendChild(role);
+                    const text = document.createElement("span");
+                    text.className = "text";
+                    if (m.role === "system") {
+                        // The whole system prompt, with its first line, the clock, in its own span.
+                        text.classList.add("full");
+                        const clock = document.createElement("span");
+                        clock.className = "clock" + (pulse ? " pulse" : "");
+                        clock.textContent = clockLine;
+                        text.append(clock, "\n" + rest.join("\n"));
+                    } else {
+                        text.textContent = `${m.preview} (${m.words.toLocaleString()} words)`;
+                    }
+                    div.appendChild(text);
+                    list.appendChild(div);
+                    if (m.role === "assistant" && turns[key][reply]) {
+                        const t = turns[key][reply++];
+                        const meta = document.createElement("div");
+                        meta.className = "meta";
+                        meta.textContent = `${t.ttft_ms} ms · ${t.cached_tokens.toLocaleString()} cached · ${cents(t.total_cost)} total`;
+                        list.appendChild(meta);
+                    }
+                });
+            }
+
+            async function step() {
+                if (chapter >= chapterCount) return false;
+                status.textContent = `Reading chapter ${chapter + 1} of ${chapterCount}...`;
+                const res = await fetch("/step", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ session_id: sessionId, chapter }),
+                });
+                const data = await res.json();
+                sessionId = data.session_id;
+                if (data.error) {
+                    status.textContent = "Error: " + data.error;
+                    return false;
+                }
+                chapter++;
+                plot(chapter, data);
+                renderSide("changing", data.changing);
+                renderSide("fixed", data.fixed);
+                status.textContent = `Read ${chapter} of ${chapterCount} chapters`;
+                return chapter < chapterCount;
+            }
+
+            async function run(all) {
+                nextBtn.disabled = allBtn.disabled = resetBtn.disabled = true;
+                try {
+                    while ((await step()) && all);
+                } catch (e) {
+                    status.textContent = "Error: " + e.message;
+                }
+                nextBtn.disabled = allBtn.disabled = chapter >= chapterCount;
+                resetBtn.disabled = false;
+            }
+
+            async function reset() {
+                if (sessionId) await fetch("/clear?session_id=" + sessionId, { method: "POST" });
+                sessionId = null;
+                chapter = 0;
+                lastHashes = { changing: [], fixed: [] };
+                lastClock = {};
+                turns = { changing: [], fixed: [] };
+                chart.data.labels = [];
+                chart.data.datasets.forEach((d) => (d.data = []));
+                chart.update();
+                for (const key of Object.keys(SIDES)) {
+                    const panel = document.getElementById(key);
+                    panel.querySelector(".stats").textContent = "";
+                    panel.querySelector(".context").innerHTML = "";
+                }
+                nextBtn.disabled = allBtn.disabled = false;
+                status.textContent = `${chapterCount} chapters to read`;
+            }
+
+            nextBtn.addEventListener("click", () => run(false));
+            allBtn.addEventListener("click", () => run(true));
+            resetBtn.addEventListener("click", reset);
+
+            fetch("/chapters")
+                .then((r) => r.json())
+                .then((d) => {
+                    chapterCount = d.count;
+                    status.textContent = `${chapterCount} chapters to read`;
+                });
+        </script>
+    </body>
+</html>
