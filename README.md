@@ -139,12 +139,6 @@ How the KV-cache speeds up generation, and how prompt caching across requests cu
 
 - [kv-cache-web](examples/kv-cache-web)
 
-### What Can We Learn From Claude Code
-
-[slides](https://peticol.as/ieor-4570-agentic-ai/slides/claude-code/)
-
-The agent loop, prompt caching, tool pipeline, and memory system inside Claude Code's leaked source.
-
 ### Coding Agents
 
 ## Live Demos
@@ -155,7 +149,7 @@ The agent loop, prompt caching, tool pipeline, and memory system inside Claude C
 
 Play five questions against Gemini while watching its context, then rewind and ask again to see that no object was ever chosen.
 
-![five-questions-web](readme-images/five-questions-web.png)
+[![five-questions-web](readme-images/five-questions-web.png)](https://five-questions-web-16155576949.us-east1.run.app)
 
 ### gemini-web-tool-calling
 
@@ -163,7 +157,7 @@ Play five questions against Gemini while watching its context, then rewind and a
 
 A web chatbot with a weather tool that shows every tool call the harness runs before the answer.
 
-![gemini-web-tool-calling](readme-images/gemini-web-tool-calling.png)
+[![gemini-web-tool-calling](readme-images/gemini-web-tool-calling.png)](https://gemini-web-tool-calling-16155576949.us-east1.run.app)
 
 ### guardrails-password-challenge-web
 
@@ -171,7 +165,7 @@ A web chatbot with a weather tool that shows every tool call the harness runs be
 
 Get the model to reveal a password across seven levels, each stacking a new guardrail on the last.
 
-![guardrails-password-challenge-web](readme-images/guardrails-password-challenge-web.png)
+[![guardrails-password-challenge-web](readme-images/guardrails-password-challenge-web.png)](https://guardrails-password-challenge-web-16155576949.us-east1.run.app)
 
 ### wikipedia-deep-research
 
@@ -179,7 +173,7 @@ Get the model to reveal a password across seven levels, each stacking a new guar
 
 Ask a question from a starting Wikipedia article and watch a Lead fan out parallel Researchers, then a Writer turn their findings into a cited report.
 
-![wikipedia-deep-research](readme-images/wikipedia-deep-research.png)
+[![wikipedia-deep-research](readme-images/wikipedia-deep-research.png)](https://wikipedia-deep-research-16155576949.us-east1.run.app)
 
 ### kv-cache-web
 
@@ -187,4 +181,4 @@ Ask a question from a starting Wikipedia article and watch a Lead fan out parall
 
 Two agents read The Hound of the Baskervilles chapter by chapter; one prompt starts with the current time, the other with today's date. Watch time to first token and cached tokens diverge.
 
-![kv-cache-web](readme-images/kv-cache-web.png)
+[![kv-cache-web](readme-images/kv-cache-web.png)](https://kv-cache-web-16155576949.us-east1.run.app)

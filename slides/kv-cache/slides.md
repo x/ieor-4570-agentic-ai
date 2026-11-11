@@ -240,7 +240,7 @@ table td, table th { padding: 0.15rem }
 
 <br>
 
-### Generating of $n$ tokens (per layer)
+### Generating $n$ tokens (per layer)
 
 | | No cache | KV-Cache |
 |---|---|---|
@@ -534,7 +534,7 @@ table td, table th { padding: 0.2rem 0.5rem }
 
 _All three reward the same thing. Static content first, dynamic content last._
 
-### Gotches
+### Gotchas
 
 - OpenAI: A hit requires reaching a machine that holds the cache (see `prompt_cache_key`)
 - Gemini 4: Caches only if the new request adds 2050 tokens.
@@ -614,13 +614,13 @@ Tools, system prompt, and identity at the top. History, memory, and user context
 
 ### 2. One change invalidates everything after it
 
-A timestamp, a new tool, or a handoff's swapping instructions near the top of the context cuases a cache-miss for every later token. **Context is append-only.**
+A timestamp, a new tool, or a handoff's swapping instructions near the top of the context causes a cache-miss for every later token. **Context is append-only.**
 
 ::bottom-left::
 
 ### 3. Don't change model mid-context
 
-A common impluse is to switch models between turns based on difficulty. However, **KV-Caches cannot be shared between models.** New model means prefill. It's better to give each it's own context (e.g. _subagent as tool-call_).
+A common impulse is to switch models between turns based on difficulty. However, **KV-Caches cannot be shared between models.** New model means prefill. It's better to give each it's own context (e.g. _subagent as tool-call_).
 
 ::bottom-right::
 

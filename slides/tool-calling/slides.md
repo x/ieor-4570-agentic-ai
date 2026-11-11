@@ -1,6 +1,6 @@
 ---
 title: Harnesses and Tool Calling
-info: Agent harnesses, tool calling, function calling, and MCP for LLM-based agents
+info: Agent harnesses and tool calling for LLM-based agents
 theme: neversink
 neversink_slug: 'Peticolas / IEOR4570 / Harnesses and Tool Calling'
 transition: slide-left

@@ -34,7 +34,6 @@ align: rm-lm
 1. Consider who we're talking to when we "talk to AI"
 2. Explain the impact of InstructGPT and RLHF.
 3. Apply the principles of a good one-shot prompt.
-4. Recognize and mitigate context rot.
 
 ---
 layout: section

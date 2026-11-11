@@ -33,7 +33,6 @@ align: rm-lm
 
 1. How do models think?
 2. Describe how o1 and DeepSeek-R1 trained the chain in.
-3. Steer a reasoning model: budgets, visibility, and what not to prompt anymore.
 
 ---
 layout: section

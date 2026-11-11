@@ -172,8 +172,8 @@ attributes
 ```yaml
 name:           charge_card
 trace_id:       4bf92f3577b34da6a3ce929d0e0e4736
-span_id:        00f067aa0ba902b7
-parent_id:   00f067aa0ba902b7
+span_id:        b7ad6b7169203331
+parent_id:      00f067aa0ba902b7
 start_time:     12:00:01.020
 end_time:       12:00:01.250
 attributes:     {payment.amount: 38.5}

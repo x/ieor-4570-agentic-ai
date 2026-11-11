@@ -994,7 +994,7 @@ print(f"Distance from 'cat' to 'ham' is {cat_to_ham}")
 
 ```
 Distance from 'cat' to 'dog' is 42.8679084777832
-Distance from 'dog' to 'ham' is 77.25950622558594
+Distance from 'cat' to 'ham' is 77.25950622558594
 ```
 
 ::right::
